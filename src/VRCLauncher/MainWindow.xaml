@@ -15,7 +15,7 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
-            <TextBox TextWrapping="Wrap" IsReadOnly="true">
+            <TextBox TextWrapping="Wrap" IsReadOnly="true" Margin="0,0,0,5">
                 vrchat://launch/?ref=vrchat.com&amp;id=wrld_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx:xxxxxx~friends(usr_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)~nonce(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)
             </TextBox>
         </Grid>
