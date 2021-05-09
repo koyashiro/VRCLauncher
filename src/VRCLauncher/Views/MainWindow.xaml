@@ -92,6 +92,7 @@
             <Button
                 Margin="0 0 0 5"
                 Grid.Row="0"
+                FontSize="32px"
                 Content="Launch VR"
                 Command="{Binding LaunchVRCommand}"
                 CommandParameter="{Binding ElementName=Window}" />
@@ -99,6 +100,7 @@
             <Button
                 Margin="0 0 0 5"
                 Grid.Row="1"
+                FontSize="32px"
                 Content="Launch Desktop"
                 Command="{Binding LaunchDesktopCommand}"
                 CommandParameter="{Binding ElementName=Window}" />
