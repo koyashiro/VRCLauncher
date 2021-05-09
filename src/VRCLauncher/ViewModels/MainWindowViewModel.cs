@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using System.Windows.Input;
 using VRCLauncher.Commands;
 
@@ -9,8 +11,11 @@ namespace VRCLauncher.ViewModels
         {
             Uri = uri;
             LaunchParameter = launchParameter;
-            LaunchVRCommand = new LaunchCommand(uri, true);
-            LaunchDesktopCommand = new LaunchCommand(uri, false);
+
+            const string VRCHAT_BIN = "VRChat.exe";
+            var vrchatPath = Path.Join(AppDomain.CurrentDomain.BaseDirectory, VRCHAT_BIN);
+            LaunchVRCommand = new LaunchCommand(vrchatPath, uri, LaunchMode.VR);
+            LaunchDesktopCommand = new LaunchCommand(vrchatPath, uri, LaunchMode.Desktop);
         }
 
         public string Uri { get; }
