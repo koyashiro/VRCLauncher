@@ -10,16 +10,18 @@ namespace VRCLauncher.Commands
     {
         private const string VRCHAT_BIN = "VRChat.exe";
         private readonly string _uri;
+        private readonly bool _isVrMode;
 
 #pragma warning disable CS8612
         public event EventHandler CanExecuteChanged;
 #pragma warning restore CS8612
 
 #pragma warning disable CS8618
-        public LaunchCommand(string uri)
+        public LaunchCommand(string uri, bool isVrMode)
 #pragma warning restore CS8618
         {
             _uri = uri;
+            _isVrMode = isVrMode;
         }
 
         private static string VRChatPath => Path.Join(AppDomain.CurrentDomain.BaseDirectory, VRCHAT_BIN);
@@ -33,18 +35,23 @@ namespace VRCLauncher.Commands
                 throw new ArgumentNullException(nameof(parameter));
             }
 
+            if (parameter is not Window window)
+            {
+                throw new ArgumentException($"{nameof(parameter)} is not Window", nameof(parameter));
+            }
+
             if (!File.Exists(VRChatPath))
             {
                 MessageBox.Show($"`{VRCHAT_BIN}` is not found");
                 return;
             }
 
-            bool isVrMode = parameter as string == "vr";
-
-            string arguments = isVrMode ? $"\"_uri\"" : $"--no-vr \"{_uri}\"";
+            string arguments = _isVrMode ? $"\"_uri\"" : $"--no-vr \"{_uri}\"";
 
             var processStartInfo = new ProcessStartInfo(VRChatPath, arguments);
             Process.Start(processStartInfo);
+
+            Window.GetWindow(window).Close();
         }
     }
 }

@@ -9,12 +9,14 @@ namespace VRCLauncher.ViewModels
         {
             Uri = uri;
             LaunchParameter = launchParameter;
-            LaunchCommand = new LaunchCommand(uri);
+            LaunchVRCommand = new LaunchCommand(uri, true);
+            LaunchDesktopCommand = new LaunchCommand(uri, false);
         }
 
         public string Uri { get; }
         public LaunchParameter LaunchParameter { get; }
 
-        public ICommand LaunchCommand { get; }
+        public ICommand LaunchVRCommand { get; }
+        public ICommand LaunchDesktopCommand { get; }
     }
 }
