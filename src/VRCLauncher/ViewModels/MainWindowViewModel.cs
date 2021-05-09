@@ -1,4 +1,6 @@
 using System.ComponentModel;
+using System.Windows.Input;
+using VRCLauncher.Commands;
 
 namespace VRCLauncher.ViewModels
 {
@@ -8,9 +10,12 @@ namespace VRCLauncher.ViewModels
         {
             Uri = uri;
             LaunchParameter = launchParameter;
+            LaunchCommand = new LaunchCommand(uri);
         }
 
         public string Uri { get; }
         public LaunchParameter LaunchParameter { get; }
+
+        public ICommand LaunchCommand { get; }
     }
 }
