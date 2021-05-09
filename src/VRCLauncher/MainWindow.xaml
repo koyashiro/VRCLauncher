@@ -15,7 +15,7 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
-            <TextBox TextWrapping="Wrap">
+            <TextBox TextWrapping="Wrap" IsReadOnly="true">
                 vrchat://launch/?ref=vrchat.com&amp;id=wrld_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx:xxxxxx~friends(usr_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)~nonce(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)
             </TextBox>
         </Grid>
@@ -35,19 +35,19 @@
             </Grid.RowDefinitions>
 
             <Label Grid.Row="0" Grid.Column="0">World ID:</Label>
-            <TextBox Grid.Row="0" Grid.Column="1">wrld_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</TextBox>
+            <TextBox Grid.Row="0" Grid.Column="1" IsReadOnly="true">wrld_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</TextBox>
 
             <Label Grid.Row="1" Grid.Column="0">Instance ID:</Label>
-            <TextBox Grid.Row="1" Grid.Column="1">xxxxxx</TextBox>
+            <TextBox Grid.Row="1" Grid.Column="1" IsReadOnly="true">xxxxxx</TextBox>
 
             <Label Grid.Row="2" Grid.Column="0">Instance Type:</Label>
-            <TextBox Grid.Row="2" Grid.Column="1">freiend+</TextBox>
+            <TextBox Grid.Row="2" Grid.Column="1" IsReadOnly="true">freiend+</TextBox>
 
             <Label Grid.Row="3" Grid.Column="0">Instance Owner ID:</Label>
-            <TextBox Grid.Row="3" Grid.Column="1">usr_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</TextBox>
+            <TextBox Grid.Row="3" Grid.Column="1" IsReadOnly="true">usr_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</TextBox>
 
             <Label Grid.Row="4" Grid.Column="0">Nonce:</Label>
-            <TextBox Grid.Row="4" Grid.Column="1">xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</TextBox>
+            <TextBox Grid.Row="4" Grid.Column="1" IsReadOnly="true">xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</TextBox>
         </Grid>
 
         <Grid Margin="0 5 0 0" Grid.Row="2">
