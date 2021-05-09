@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "VRCLauncher": {
+      "commandName": "Project",
+      "commandLineArgs": "vrchat://launch/?id=wrld_01234567-89ab-cdef-0123-456789abcdef:123456~hidden(usr_01234567-89ab-cdef-0123-456789abcdef)~nonce(0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF)"
+    }
+  }
+}

@@ -20,6 +20,8 @@ namespace VRCLauncher
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly LaunchParameter _parameter;
+
         public MainWindow()
         {
             var args = Environment.GetCommandLineArgs();
@@ -27,7 +29,14 @@ namespace VRCLauncher
             if (args.Length < 2)
             {
                 MessageBox.Show("Invalid parameter", "VRChatLauncher");
-                Application.Current.Shutdown(1);
+                Environment.Exit(1);
+            }
+
+            var parameterArg = args[1];
+            if (!LaunchParameter.TryParse(parameterArg, out _parameter))
+            {
+                MessageBox.Show("Invalid parameter", "VRChatLauncher");
+                Environment.Exit(1);
             }
 
             InitializeComponent();
