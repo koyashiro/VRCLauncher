@@ -15,6 +15,10 @@ trim_trailing_whitespace = false
 indent_style = space
 indent_size = 4
 
+[*.xaml]
+indent_style = space
+indent_size = 4
+
 [*.csproj]
 indent_style = space
 indent_size = 2
