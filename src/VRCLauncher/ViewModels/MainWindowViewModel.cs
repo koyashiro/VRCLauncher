@@ -4,9 +4,9 @@ using System;
 using System.ComponentModel;
 using System.IO;
 using System.Reactive.Disposables;
-using System.Windows.Input;
-using VRCLauncher.Commands;
+using System.Windows;
 using VRCLauncher.Models;
+using VRCLauncher.Utils;
 
 namespace VRCLauncher.ViewModels
 {
@@ -47,8 +47,42 @@ namespace VRCLauncher.ViewModels
 
             const string VRCHAT_BIN = "VRChat.exe";
             var vrchatPath = Path.Join(AppDomain.CurrentDomain.BaseDirectory, VRCHAT_BIN);
-            LaunchVRCommand = new LaunchCommand(vrchatPath, uri, LaunchMode.VR);
-            LaunchDesktopCommand = new LaunchCommand(vrchatPath, uri, LaunchMode.Desktop);
+            vrchatPath = @"C:\Program Files (x86)\Steam\steamapps\common\VRChat\VRChat.exe";
+
+            LaunchVRCommand = new ReactiveCommand().AddTo(Disposable);
+            LaunchVRCommand.Subscribe(parameter =>
+            {
+                if (parameter is null)
+                {
+                    throw new ArgumentNullException(nameof(parameter));
+                }
+
+                if (parameter is not Window window)
+                {
+                    throw new ArgumentException($"{parameter} is not Window", nameof(parameter));
+                }
+
+                Launcher.LaunchVR(vrchatPath, Uri.Value);
+                window.Close();
+            });
+
+
+            LaunchDesktopCommand = new ReactiveCommand().AddTo(Disposable);
+            LaunchDesktopCommand.Subscribe(parameter =>
+           {
+                if (parameter is null)
+                {
+                    throw new ArgumentNullException(nameof(parameter));
+                }
+
+                if (parameter is not Window window)
+                {
+                    throw new ArgumentException($"{parameter} is not Window", nameof(parameter));
+                }
+
+                Launcher.LaunchDesktop(vrchatPath, Uri.Value);
+                window.Close();
+           });
         }
 
         private CompositeDisposable Disposable { get; } = new CompositeDisposable();
@@ -60,8 +94,16 @@ namespace VRCLauncher.ViewModels
         public ReactiveProperty<string?> InstanceOwnerId { get; }
         public ReactiveProperty<string> Nonce { get; }
 
-        public ICommand LaunchVRCommand { get; }
-        public ICommand LaunchDesktopCommand { get; }
+        public LaunchParameter LaunchParameter => new(
+            WorldId.Value,
+            InstanceId.Value,
+            InstanceType.Value,
+            InstanceOwnerId.Value,
+            Nonce.Value
+        );
+
+        public ReactiveCommand LaunchVRCommand { get; }
+        public ReactiveCommand LaunchDesktopCommand { get; }
 
         protected virtual void Dispose(bool disposing)
         {
