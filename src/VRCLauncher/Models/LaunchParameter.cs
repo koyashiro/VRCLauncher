@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 
-namespace VRCLauncher
+namespace VRCLauncher.Models
 {
     public class LaunchParameter
     {
@@ -29,8 +29,14 @@ namespace VRCLauncher
         public string? InstanceOwnerId { get; set; }
         public string Nonce { get; set; }
 
-        public static bool TryParse(string arg, [MaybeNullWhen(false)] out LaunchParameter launchParameter)
+        public static bool TryParse(string? arg, [MaybeNullWhen(false)] out LaunchParameter launchParameter)
         {
+            if (string.IsNullOrEmpty(arg))
+            {
+                launchParameter = default;
+                return false;
+            }
+
             if (!TryParseWorldIdAndInstanceId(arg, out var worldId, out var instanceId))
             {
                 launchParameter = default;

@@ -15,7 +15,7 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
-            <TextBox TextWrapping="Wrap" IsReadOnly="true" Margin="0,0,0,5" Text="{Binding Path=Uri, Mode=OneWay}" />
+            <TextBox TextWrapping="Wrap" IsReadOnly="true" Margin="0,0,0,5" Text="{Binding Path=Uri.Value, Mode=OneWay}" />
         </Grid>
 
         <Grid Margin="0,5,0,5" Grid.Row="1">
@@ -40,7 +40,7 @@
                 Grid.Row="0"
                 Grid.Column="1"
                 IsReadOnly="true"
-                Text="{Binding Path=LaunchParameter.WorldId, Mode=OneWay}" />
+                Text="{Binding Path=WorldId.Value, Mode=OneWay}" />
 
             <Label
                 Grid.Row="1"
@@ -50,7 +50,7 @@
                 Grid.Row="1"
                 Grid.Column="1"
                 IsReadOnly="true"
-                Text="{Binding Path=LaunchParameter.InstanceId, Mode=OneWay}" />
+                Text="{Binding Path=InstanceId.Value, Mode=OneWay}" />
 
             <Label
                 Grid.Row="2"
@@ -60,7 +60,7 @@
                 Grid.Row="2"
                 Grid.Column="1"
                 IsReadOnly="true"
-                Text="{Binding Path=LaunchParameter.InstanceType, Mode=OneWay}" />
+                Text="{Binding Path=InstanceType.Value, Mode=OneWay}" />
 
             <Label
                 Grid.Row="3"
@@ -70,7 +70,7 @@
                 Grid.Row="3"
                 Grid.Column="1"
                 IsReadOnly="true"
-                Text="{Binding Path=LaunchParameter.InstanceOwnerId, Mode=OneWay}" />
+                Text="{Binding Path=InstanceOwnerId.Value, Mode=OneWay}" />
 
             <Label
                 Grid.Row="4"
@@ -80,7 +80,7 @@
                 Grid.Row="4"
                 Grid.Column="1"
                 IsReadOnly="true"
-                Text="{Binding Path=LaunchParameter.Nonce, Mode=OneWay}" />
+                Text="{Binding Path=Nonce.Value, Mode=OneWay}" />
         </Grid>
 
         <Grid Margin="0 5 0 0" Grid.Row="2">

@@ -11,24 +11,17 @@ namespace VRCLauncher.Views
     {
         public MainWindow()
         {
-            var args = Environment.GetCommandLineArgs();
-
-            if (args.Length < 2)
-            {
-                MessageBox.Show("Invalid parameter", "VRChatLauncher");
-                Environment.Exit(1);
-            }
-
-            var uri = args[1];
-            if (!LaunchParameter.TryParse(uri, out var launchParameter))
-            {
-                MessageBox.Show("Invalid parameter", "VRChatLauncher");
-                Environment.Exit(1);
-            }
-
             InitializeComponent();
 
-            DataContext = new MainWindowViewModel(uri, launchParameter);
+            var args = Environment.GetCommandLineArgs();
+            if (args.Length < 2)
+            {
+                DataContext = new MainWindowViewModel();
+            }
+            else
+            {
+                DataContext = new MainWindowViewModel(args[1]);
+            }
         }
     }
 }
