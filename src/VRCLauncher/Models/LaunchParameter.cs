@@ -147,8 +147,7 @@ namespace VRCLauncher.Models
             if (privateMatch.Success)
             {
                 // Invite Plus
-                var invitePlusMatch = Regex.Match(arg, "~canRequestInvite");
-                if (invitePlusMatch.Success)
+                if (Regex.IsMatch(arg, "~canRequestInvite[~$]"))
                 {
                     return (InstanceType.InvitePlus, privateMatch.Groups[GROUP_NAME_USER_ID].Value);
                 }
