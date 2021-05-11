@@ -3,7 +3,6 @@ using Reactive.Bindings.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Windows;
@@ -63,11 +62,8 @@ namespace VRCLauncher.ViewModels
                         throw new ArgumentException($"{parameter} is not Window", nameof(parameter));
                     }
 
-                    const string VRCHAT_BIN = "VRChat.exe";
-                    var vrchatPath = Path.Join(AppDomain.CurrentDomain.BaseDirectory, VRCHAT_BIN);
-                    vrchatPath = @"C:\Program Files (x86)\Steam\steamapps\common\VRChat\VRChat.exe";
-
-                    launchAction(vrchatPath, Uri.Value);
+                    var config = Config.Load();
+                    launchAction(config.VRChatPath, Uri.Value);
                     window.Close();
                 };
 
