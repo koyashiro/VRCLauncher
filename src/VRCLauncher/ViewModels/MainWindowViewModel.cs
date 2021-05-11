@@ -15,7 +15,7 @@ namespace VRCLauncher.ViewModels
     public class MainWindowViewModel : INotifyPropertyChanged, IDisposable
     {
         private bool _disposedValue;
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
         public Dictionary<InstanceType, string> InstanceTypeItems => new()
         {
             { Models.InstanceType.Public, "Public" },
