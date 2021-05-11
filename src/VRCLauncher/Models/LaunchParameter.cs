@@ -198,6 +198,7 @@ namespace VRCLauncher.Models
             return false;
         }
     }
+
     public enum InstanceType
     {
         Public,
