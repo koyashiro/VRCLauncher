@@ -12,7 +12,6 @@ namespace VRCLauncher.Views
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainWindowViewModel();
         }
     }
 }
