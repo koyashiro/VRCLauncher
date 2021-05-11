@@ -50,22 +50,22 @@ namespace VRCLauncher.ViewModels
                     );
                     return launchParameter.IsValid();
                 });
-            Action<object, Action<string, string>> launchCommandAction = (parameter, launchAction) =>
+            void launchCommandAction(object parameter, Action<string, string> launchAction)
+            {
+                if (parameter is null)
                 {
-                    if (parameter is null)
-                    {
-                        throw new ArgumentNullException(nameof(parameter));
-                    }
+                    throw new ArgumentNullException(nameof(parameter));
+                }
 
-                    if (parameter is not Window window)
-                    {
-                        throw new ArgumentException($"{parameter} is not Window", nameof(parameter));
-                    }
+                if (parameter is not Window window)
+                {
+                    throw new ArgumentException($"{parameter} is not Window", nameof(parameter));
+                }
 
-                    var config = Config.Load();
-                    launchAction(config.VRChatPath, Uri.Value);
-                    window.Close();
-                };
+                var config = Config.Load();
+                launchAction(config.VRChatPath, Uri.Value);
+                window.Close();
+            }
 
             LaunchVRCommand = new ReactiveCommand(canLaunchCommand).AddTo(Disposable);
             LaunchVRCommand.Subscribe(parameter => launchCommandAction(parameter, Launcher.LaunchVR));
