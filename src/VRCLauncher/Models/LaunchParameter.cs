@@ -1,12 +1,16 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace VRCLauncher.Models
 {
     public class LaunchParameter
     {
-        private const string REGEX_UUID = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
-        private const string REGEX_NONCE = "[0-9A-F]{64}";
+        private static readonly string REGEX_UUID = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
+        private static readonly string REGEX_WORLD_ID = $"wrld_{REGEX_UUID}";
+        private static readonly string REGEX_USER_ID = $"usr_{REGEX_UUID}";
+        private static readonly string REGEX_NONCE = "[0-9A-F]{64}";
 
         public LaunchParameter(
             string worldId,
@@ -28,6 +32,67 @@ namespace VRCLauncher.Models
         public InstanceType InstanceType { get; set; }
         public string? InstanceOwnerId { get; set; }
         public string Nonce { get; set; }
+
+        public bool IsValid()
+        {
+            return IsValidWorldId(WorldId)
+                && IsValidInstanceType(InstanceType)
+                && IsValidUserId(InstanceOwnerId)
+                && IsValidNonce(Nonce);
+        }
+
+        private static bool IsValidWorldId(string worldId)
+        {
+            return Regex.IsMatch(worldId, REGEX_WORLD_ID);
+        }
+
+        private static bool IsValidInstanceType(InstanceType instanceType)
+        {
+            return Enum.IsDefined(instanceType);
+        }
+
+        private static bool IsValidUserId(string? userId)
+        {
+            if (userId is null) return false;
+            return Regex.IsMatch(userId, REGEX_USER_ID);
+        }
+
+        private static bool IsValidNonce(string nonce)
+        {
+            return Regex.IsMatch(nonce, REGEX_NONCE);
+        }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.Append($"vrchat://launch/?ref=vrchat.com&id={WorldId}:{InstanceId}");
+
+            switch (InstanceType)
+            {
+                case InstanceType.FriendPlus:
+                    sb.Append($"~hidden({InstanceOwnerId})");
+                    break;
+                case InstanceType.FriendOnly:
+                    sb.Append($"~friends({InstanceOwnerId})");
+                    break;
+                case InstanceType.InvitePlus:
+                case InstanceType.InviteOnly:
+                    sb.Append($"~private({InstanceOwnerId})");
+                    break;
+            }
+
+            if (InstanceType != InstanceType.Public)
+            {
+                sb.Append($"~nonce({Nonce})");
+            }
+
+            if (InstanceType == InstanceType.InvitePlus)
+            {
+                sb.Append("~canRequestInvite");
+            }
+
+            return sb.ToString();
+        }
 
         public static bool TryParse(string? arg, [MaybeNullWhen(false)] out LaunchParameter launchParameter)
         {
@@ -60,7 +125,7 @@ namespace VRCLauncher.Models
             const string GROUP_NAME_WORLD_ID = "worldId";
             const string GROUP_NAME_INSTANCE_ID = "instanceId";
 
-            var match = Regex.Match(arg, $@"[&?]id=(?<{GROUP_NAME_WORLD_ID}>wrld_{REGEX_UUID}):(?<{GROUP_NAME_INSTANCE_ID}>[0-9A-z]+)");
+            var match = Regex.Match(arg, $@"[&?]id=(?<{GROUP_NAME_WORLD_ID}>{REGEX_WORLD_ID}):(?<{GROUP_NAME_INSTANCE_ID}>[0-9A-z]+)");
             if (!match.Success)
             {
                 worldId = default;
@@ -78,7 +143,7 @@ namespace VRCLauncher.Models
             var GROUP_NAME_USER_ID = "userId";
 
             // Invite Only, Invite Plus
-            var privateMatch = Regex.Match(arg, $@"~private\((?<{GROUP_NAME_USER_ID}>usr_{REGEX_UUID})\)");
+            var privateMatch = Regex.Match(arg, $@"~private\((?<{GROUP_NAME_USER_ID}>{REGEX_USER_ID})\)");
             if (privateMatch.Success)
             {
                 // Invite Plus
@@ -95,14 +160,14 @@ namespace VRCLauncher.Models
             }
 
             // Friend Plus
-            var hiddenMatch = Regex.Match(arg, $@"~hidden\((?<{GROUP_NAME_USER_ID}>usr_{REGEX_UUID})\)");
+            var hiddenMatch = Regex.Match(arg, $@"~hidden\((?<{GROUP_NAME_USER_ID}>{REGEX_USER_ID})\)");
             if (hiddenMatch.Success)
             {
                 return (InstanceType.FriendPlus, hiddenMatch.Groups[GROUP_NAME_USER_ID].Value);
             }
 
             // Friend Only
-            var friendsMatch = Regex.Match(arg, $@"~friends\((?<{GROUP_NAME_USER_ID}>usr_{REGEX_UUID})\)");
+            var friendsMatch = Regex.Match(arg, $@"~friends\((?<{GROUP_NAME_USER_ID}>{REGEX_USER_ID})\)");
             if (friendsMatch.Success)
             {
                 return (InstanceType.FriendOnly, friendsMatch.Groups[GROUP_NAME_USER_ID].Value);

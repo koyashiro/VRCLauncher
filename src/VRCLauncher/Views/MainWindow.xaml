@@ -15,7 +15,10 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
-            <TextBox TextWrapping="Wrap" IsReadOnly="true" Margin="0,0,0,5" Text="{Binding Path=Uri.Value, Mode=OneWay}" />
+            <TextBox
+                TextWrapping="Wrap"
+                Margin="0,0,0,5"
+                Text="{Binding Path=Uri.Value}" />
         </Grid>
 
         <Grid Margin="0,5,0,5" Grid.Row="1">
@@ -39,8 +42,7 @@
             <TextBox
                 Grid.Row="0"
                 Grid.Column="1"
-                IsReadOnly="true"
-                Text="{Binding Path=WorldId.Value, Mode=OneWay}" />
+                Text="{Binding WorldId.Value}" />
 
             <Label
                 Grid.Row="1"
@@ -49,18 +51,19 @@
             <TextBox
                 Grid.Row="1"
                 Grid.Column="1"
-                IsReadOnly="true"
-                Text="{Binding Path=InstanceId.Value, Mode=OneWay}" />
+                Text="{Binding InstanceId.Value}" />
 
             <Label
                 Grid.Row="2"
                 Grid.Column="0"
                 Content="Instance Type:" />
-            <TextBox
+            <ComboBox
                 Grid.Row="2"
                 Grid.Column="1"
-                IsReadOnly="true"
-                Text="{Binding Path=InstanceType.Value, Mode=OneWay}" />
+                ItemsSource="{Binding InstanceTypeItems}"
+                DisplayMemberPath="Value"
+                SelectedValuePath="Key"
+                SelectedValue="{Binding InstanceType.Value}" />
 
             <Label
                 Grid.Row="3"
@@ -69,8 +72,7 @@
             <TextBox
                 Grid.Row="3"
                 Grid.Column="1"
-                IsReadOnly="true"
-                Text="{Binding Path=InstanceOwnerId.Value, Mode=OneWay}" />
+                Text="{Binding InstanceOwnerId.Value}" />
 
             <Label
                 Grid.Row="4"
@@ -79,8 +81,7 @@
             <TextBox
                 Grid.Row="4"
                 Grid.Column="1"
-                IsReadOnly="true"
-                Text="{Binding Path=Nonce.Value, Mode=OneWay}" />
+                Text="{Binding Nonce.Value}" />
         </Grid>
 
         <Grid Margin="0 5 0 0" Grid.Row="2">
