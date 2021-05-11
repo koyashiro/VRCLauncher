@@ -18,11 +18,11 @@ namespace VRCLauncher.ViewModels
         public event PropertyChangedEventHandler PropertyChanged;
         public Dictionary<InstanceType, string> InstanceTypeItems => new()
         {
-            { VRCLauncher.InstanceType.Public, "Public" },
-            { VRCLauncher.InstanceType.FriendPlus, "Friend+" },
-            { VRCLauncher.InstanceType.FriendOnly, "Friend Only" },
-            { VRCLauncher.InstanceType.InvitePlus, "Invite+" },
-            { VRCLauncher.InstanceType.InviteOnly, "Invite" },
+            { Models.InstanceType.Public, "Public" },
+            { Models.InstanceType.FriendPlus, "Friend+" },
+            { Models.InstanceType.FriendOnly, "Friend Only" },
+            { Models.InstanceType.InvitePlus, "Invite+" },
+            { Models.InstanceType.InviteOnly, "Invite" },
         };
 
         public MainWindowViewModel(string? uri = null)
@@ -48,7 +48,7 @@ namespace VRCLauncher.ViewModels
             {
                 WorldId = new ReactiveProperty<string>().AddTo(Disposable);
                 InstanceId = new ReactiveProperty<string>().AddTo(Disposable);
-                InstanceType = new ReactiveProperty<InstanceType>(VRCLauncher.InstanceType.Public).AddTo(Disposable);
+                InstanceType = new ReactiveProperty<InstanceType>(Models.InstanceType.Public).AddTo(Disposable);
                 InstanceOwnerId = new ReactiveProperty<string?>().AddTo(Disposable);
                 Nonce = new ReactiveProperty<string>().AddTo(Disposable);
             }

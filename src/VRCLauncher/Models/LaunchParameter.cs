@@ -198,4 +198,12 @@ namespace VRCLauncher.Models
             return false;
         }
     }
+    public enum InstanceType
+    {
+        Public,
+        FriendPlus,
+        FriendOnly,
+        InvitePlus,
+        InviteOnly,
+    }
 }
