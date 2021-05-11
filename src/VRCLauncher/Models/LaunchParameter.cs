@@ -53,7 +53,11 @@ namespace VRCLauncher.Models
 
         private static bool IsValidUserId(string? userId)
         {
-            if (userId is null) return false;
+            if (userId is null)
+            {
+                return false;
+            }
+
             return Regex.IsMatch(userId, REGEX_USER_ID);
         }
 

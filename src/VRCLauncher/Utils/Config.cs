@@ -12,7 +12,10 @@ namespace VRCLauncher.Utils
 
         public string VRChatPath { get; } = DEFAULT_VRCHAT_PATH;
 
-        public static bool ExistConfigFile() => File.Exists(CONFIG_FILE_PATH);
+        public static bool ExistConfigFile()
+        {
+            return File.Exists(CONFIG_FILE_PATH);
+        }
 
         public static Config Load()
         {
