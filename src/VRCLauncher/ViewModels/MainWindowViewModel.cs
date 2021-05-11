@@ -25,36 +25,19 @@ namespace VRCLauncher.ViewModels
             { Models.InstanceType.InviteOnly, "Invite" },
         };
 
-        public MainWindowViewModel(string? uri = null)
+        public MainWindowViewModel()
         {
-            if (uri is null)
-            {
-                Uri = new ReactiveProperty<string>().AddTo(Disposable);
-            }
-            else
-            {
-                Uri = new ReactiveProperty<string>(uri).AddTo(Disposable);
-            }
+            var args = Environment.GetCommandLineArgs();
+            var uri = args.Length > 1 ? args[1] : string.Empty;
+            Uri = new ReactiveProperty<string>(uri).AddTo(Disposable);
 
-            if (LaunchParameter.TryParse(uri, out var launchParameter))
-            {
-                WorldId = new ReactiveProperty<string>(launchParameter.WorldId).AddTo(Disposable);
-                InstanceId = new ReactiveProperty<string>(launchParameter.InstanceId).AddTo(Disposable);
-                InstanceType = new ReactiveProperty<InstanceType>(launchParameter.InstanceType).AddTo(Disposable);
-                InstanceOwnerId = new ReactiveProperty<string?>(launchParameter.InstanceOwnerId).AddTo(Disposable);
-                Nonce = new ReactiveProperty<string>(launchParameter.Nonce).AddTo(Disposable);
-            }
-            else
-            {
-                WorldId = new ReactiveProperty<string>().AddTo(Disposable);
-                InstanceId = new ReactiveProperty<string>().AddTo(Disposable);
-                InstanceType = new ReactiveProperty<InstanceType>(Models.InstanceType.Public).AddTo(Disposable);
-                InstanceOwnerId = new ReactiveProperty<string?>().AddTo(Disposable);
-                Nonce = new ReactiveProperty<string>().AddTo(Disposable);
-            }
+            WorldId = new ReactiveProperty<string>(string.Empty).AddTo(Disposable);
+            InstanceId = new ReactiveProperty<string>().AddTo(Disposable);
+            InstanceType = new ReactiveProperty<InstanceType>(Models.InstanceType.Public).AddTo(Disposable);
+            InstanceOwnerId = new ReactiveProperty<string?>().AddTo(Disposable);
+            Nonce = new ReactiveProperty<string>(string.Empty).AddTo(Disposable);
 
             Uri.Subscribe(_ => UpdateLaunchParameterIfNeeded());
-
             Observable.Merge(
                 WorldId.ToUnit(),
                 InstanceId.ToUnit(),

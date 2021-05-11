@@ -12,16 +12,7 @@ namespace VRCLauncher.Views
         public MainWindow()
         {
             InitializeComponent();
-
-            var args = Environment.GetCommandLineArgs();
-            if (args.Length < 2)
-            {
-                DataContext = new MainWindowViewModel();
-            }
-            else
-            {
-                DataContext = new MainWindowViewModel(args[1]);
-            }
+            DataContext = new MainWindowViewModel();
         }
     }
 }
