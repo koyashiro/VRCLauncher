@@ -15,15 +15,8 @@ namespace VRCLauncher.ViewModels
     public class MainWindowViewModel : INotifyPropertyChanged, IDisposable
     {
         private bool _disposedValue;
+
         public event PropertyChangedEventHandler? PropertyChanged;
-        public Dictionary<InstanceType, string> InstanceTypeItems => new()
-        {
-            { Models.InstanceType.Public, "Public" },
-            { Models.InstanceType.FriendPlus, "Friend+" },
-            { Models.InstanceType.FriendOnly, "Friend Only" },
-            { Models.InstanceType.InvitePlus, "Invite+" },
-            { Models.InstanceType.InviteOnly, "Invite" },
-        };
 
         public MainWindowViewModel()
         {
@@ -96,6 +89,15 @@ namespace VRCLauncher.ViewModels
 
         public ReactiveCommand LaunchVRCommand { get; }
         public ReactiveCommand LaunchDesktopCommand { get; }
+
+        public Dictionary<InstanceType, string> InstanceTypeItems => new()
+        {
+            { Models.InstanceType.Public, "Public" },
+            { Models.InstanceType.FriendPlus, "Friend+" },
+            { Models.InstanceType.FriendOnly, "Friend Only" },
+            { Models.InstanceType.InvitePlus, "Invite+" },
+            { Models.InstanceType.InviteOnly, "Invite" },
+        };
 
         private void UpdateLaunchParameterIfNeeded()
         {
