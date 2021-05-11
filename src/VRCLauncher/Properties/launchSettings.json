@@ -2,7 +2,7 @@
   "profiles": {
     "VRCLauncher": {
       "commandName": "Project",
-      "commandLineArgs": "vrchat://launch/?id=wrld_01234567-89ab-cdef-0123-456789abcdef:123456~hidden(usr_01234567-89ab-cdef-0123-456789abcdef)~nonce(0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF)"
+      "commandLineArgs": "vrchat://launch/?ref=vrchat.com&id=wrld_9c72e56b-d2b0-4c9b-b816-07a857f6ae4e:4668~private(usr_32525db8-119c-43b5-ae0b-1c287151a529)~nonce(58fb96cc-9a4f-44e5-9a41-ab1e5f1db111)~canRequestInvite"
     }
   }
 }

@@ -182,14 +182,21 @@ namespace VRCLauncher.Models
             var GROUP_NAME_NONCE = "userId";
 
             var match = Regex.Match(arg, $@"~nonce\((?<{GROUP_NAME_NONCE}>{REGEX_NONCE})\)");
-            if (!match.Success)
+            if (match.Success)
             {
-                nonce = null;
-                return false;
+                nonce = match.Groups[GROUP_NAME_NONCE].Value;
+                return true;
             }
 
-            nonce = match.Groups[GROUP_NAME_NONCE].Value;
-            return true;
+            match = Regex.Match(arg, $@"~nonce\((?<{GROUP_NAME_NONCE}>{REGEX_UUID})\)");
+            if (match.Success)
+            {
+                nonce = match.Groups[GROUP_NAME_NONCE].Value;
+                return true;
+            }
+
+            nonce = null;
+            return false;
         }
     }
 }
