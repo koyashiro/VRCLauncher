@@ -37,53 +37,52 @@ namespace VRCLauncher.ViewModels
             InstanceOwnerId = new ReactiveProperty<string?>().AddTo(Disposable);
             Nonce = new ReactiveProperty<string>(string.Empty).AddTo(Disposable);
 
-            Uri.Subscribe(_ => UpdateLaunchParameterIfNeeded());
-            Observable.Merge(
+            var launchParameterObservables = Observable.Merge(
                 WorldId.ToUnit(),
                 InstanceId.ToUnit(),
                 InstanceType.ToUnit(),
                 InstanceOwnerId.ToUnit(),
-                Nonce.ToUnit())
-                .Subscribe(_ => UpdateUriIfNeeded());
+                Nonce.ToUnit());
 
-            const string VRCHAT_BIN = "VRChat.exe";
-            var vrchatPath = Path.Join(AppDomain.CurrentDomain.BaseDirectory, VRCHAT_BIN);
-            vrchatPath = @"C:\Program Files (x86)\Steam\steamapps\common\VRChat\VRChat.exe";
+            Uri.Subscribe(_ => UpdateLaunchParameterIfNeeded());
+            launchParameterObservables.Subscribe(_ => UpdateUriIfNeeded());
 
-            LaunchVRCommand = new ReactiveCommand().AddTo(Disposable);
-            LaunchVRCommand.Subscribe(parameter =>
-            {
-                if (parameter is null)
+            var canLaunchCommand = launchParameterObservables.Select(_ =>
                 {
-                    throw new ArgumentNullException(nameof(parameter));
-                }
-
-                if (parameter is not Window window)
+                    var launchParameter = new LaunchParameter(
+                        WorldId.Value,
+                        InstanceId.Value,
+                        InstanceType.Value,
+                        InstanceOwnerId.Value,
+                        Nonce.Value
+                    );
+                    return launchParameter.IsValid();
+                });
+            Action<object, Action<string, string>> launchCommandAction = (parameter, launchAction) =>
                 {
-                    throw new ArgumentException($"{parameter} is not Window", nameof(parameter));
-                }
+                    if (parameter is null)
+                    {
+                        throw new ArgumentNullException(nameof(parameter));
+                    }
 
-                Launcher.LaunchVR(vrchatPath, Uri.Value);
-                window.Close();
-            });
+                    if (parameter is not Window window)
+                    {
+                        throw new ArgumentException($"{parameter} is not Window", nameof(parameter));
+                    }
 
+                    const string VRCHAT_BIN = "VRChat.exe";
+                    var vrchatPath = Path.Join(AppDomain.CurrentDomain.BaseDirectory, VRCHAT_BIN);
+                    vrchatPath = @"C:\Program Files (x86)\Steam\steamapps\common\VRChat\VRChat.exe";
 
-            LaunchDesktopCommand = new ReactiveCommand().AddTo(Disposable);
-            LaunchDesktopCommand.Subscribe(parameter =>
-           {
-               if (parameter is null)
-               {
-                   throw new ArgumentNullException(nameof(parameter));
-               }
+                    launchAction(vrchatPath, Uri.Value);
+                    window.Close();
+                };
 
-               if (parameter is not Window window)
-               {
-                   throw new ArgumentException($"{parameter} is not Window", nameof(parameter));
-               }
+            LaunchVRCommand = new ReactiveCommand(canLaunchCommand).AddTo(Disposable);
+            LaunchVRCommand.Subscribe(parameter => launchCommandAction(parameter, Launcher.LaunchVR));
 
-               Launcher.LaunchDesktop(vrchatPath, Uri.Value);
-               window.Close();
-           });
+            LaunchDesktopCommand = new ReactiveCommand(canLaunchCommand).AddTo(Disposable);
+            LaunchVRCommand.Subscribe(parameter => launchCommandAction(parameter, Launcher.LaunchDesktop));
         }
 
         private CompositeDisposable Disposable { get; } = new CompositeDisposable();
