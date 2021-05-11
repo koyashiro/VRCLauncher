@@ -1,6 +1,4 @@
-using System;
 using System.Windows;
-using VRCLauncher.ViewModels;
 
 namespace VRCLauncher.Views
 {
