@@ -16,7 +16,10 @@ namespace VRCLauncher
     {
         public App()
         {
-            Config.Load();
+            if (!Config.ExistConfigFile())
+            {
+                Config.Initialize();
+            }
         }
     }
 }

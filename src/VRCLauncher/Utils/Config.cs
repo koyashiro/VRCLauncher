@@ -6,15 +6,17 @@ namespace VRCLauncher.Utils
 {
     public class Config
     {
-        private const string CONFIG_FILE_NAME = "VRCLauncher.json";
         private const string DEFAULT_VRCHAT_PATH = @"C:\Program Files (x86)\Steam\steamapps\common\VRChat\VRChat.exe";
+        private const string CONFIG_FILE_NAME = "VRCLauncher.json";
         private static readonly string CONFIG_FILE_PATH = $"{Path.Join(AppDomain.CurrentDomain.BaseDirectory, CONFIG_FILE_NAME)}";
 
         public string VRChatPath { get; } = DEFAULT_VRCHAT_PATH;
 
+        public static bool ExistConfigFile() => File.Exists(CONFIG_FILE_PATH);
+
         public static Config Load()
         {
-            if (!File.Exists(CONFIG_FILE_PATH))
+            if (!ExistConfigFile())
             {
                 return Initialize();
             }
@@ -31,19 +33,19 @@ namespace VRCLauncher.Utils
             }
             catch (PathTooLongException)
             {
-                return Initialize();
+                return new Config();
             }
             catch (IOException)
             {
-                return Initialize();
+                return new Config();
             }
             catch (UnauthorizedAccessException)
             {
-                return Initialize();
+                return new Config();
             }
             catch (JsonException)
             {
-                return Initialize();
+                return new Config();
             }
         }
 
