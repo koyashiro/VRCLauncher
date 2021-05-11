@@ -143,11 +143,11 @@ namespace VRCLauncher.Models
             var GROUP_NAME_USER_ID = "userId";
 
             // Invite Only, Invite Plus
-            var privateMatch = Regex.Match(arg, $@"~private\((?<{GROUP_NAME_USER_ID}>{REGEX_USER_ID})\)");
+            var privateMatch = Regex.Match(arg, $@"~private\((?<{GROUP_NAME_USER_ID}>{REGEX_USER_ID})\)(~|$)");
             if (privateMatch.Success)
             {
                 // Invite Plus
-                if (Regex.IsMatch(arg, "~canRequestInvite[~$]"))
+                if (Regex.IsMatch(arg, "~canRequestInvite(~|$)"))
                 {
                     return (InstanceType.InvitePlus, privateMatch.Groups[GROUP_NAME_USER_ID].Value);
                 }
@@ -159,14 +159,14 @@ namespace VRCLauncher.Models
             }
 
             // Friend Plus
-            var hiddenMatch = Regex.Match(arg, $@"~hidden\((?<{GROUP_NAME_USER_ID}>{REGEX_USER_ID})\)");
+            var hiddenMatch = Regex.Match(arg, $@"~hidden\((?<{GROUP_NAME_USER_ID}>{REGEX_USER_ID})\)(~|$)");
             if (hiddenMatch.Success)
             {
                 return (InstanceType.FriendPlus, hiddenMatch.Groups[GROUP_NAME_USER_ID].Value);
             }
 
             // Friend Only
-            var friendsMatch = Regex.Match(arg, $@"~friends\((?<{GROUP_NAME_USER_ID}>{REGEX_USER_ID})\)");
+            var friendsMatch = Regex.Match(arg, $@"~friends\((?<{GROUP_NAME_USER_ID}>{REGEX_USER_ID})\)(~|$)");
             if (friendsMatch.Success)
             {
                 return (InstanceType.FriendOnly, friendsMatch.Groups[GROUP_NAME_USER_ID].Value);
@@ -180,14 +180,14 @@ namespace VRCLauncher.Models
         {
             var GROUP_NAME_NONCE = "userId";
 
-            var match = Regex.Match(arg, $@"~nonce\((?<{GROUP_NAME_NONCE}>{REGEX_NONCE})\)");
+            var match = Regex.Match(arg, $@"~nonce\((?<{GROUP_NAME_NONCE}>{REGEX_NONCE})\)(~|$)");
             if (match.Success)
             {
                 nonce = match.Groups[GROUP_NAME_NONCE].Value;
                 return true;
             }
 
-            match = Regex.Match(arg, $@"~nonce\((?<{GROUP_NAME_NONCE}>{REGEX_UUID})\)");
+            match = Regex.Match(arg, $@"~nonce\((?<{GROUP_NAME_NONCE}>{REGEX_UUID})\)(~|$)");
             if (match.Success)
             {
                 nonce = match.Groups[GROUP_NAME_NONCE].Value;
