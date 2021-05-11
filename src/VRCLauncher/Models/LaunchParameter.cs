@@ -10,7 +10,7 @@ namespace VRCLauncher.Models
         private static readonly string REGEX_UUID = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
         private static readonly string REGEX_WORLD_ID = $"wrld_{REGEX_UUID}";
         private static readonly string REGEX_USER_ID = $"usr_{REGEX_UUID}";
-        private static readonly string REGEX_NONCE = "[0-9A-F]{64}";
+        private static readonly string REGEX_NONCE = "[0-9A-z]+";
 
         public LaunchParameter(
             string worldId,
