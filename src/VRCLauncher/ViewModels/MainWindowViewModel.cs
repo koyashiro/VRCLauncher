@@ -71,7 +71,7 @@ namespace VRCLauncher.ViewModels
             LaunchVRCommand.Subscribe(parameter => launchCommandAction(parameter, Launcher.LaunchVR));
 
             LaunchDesktopCommand = new ReactiveCommand(canLaunchCommand).AddTo(Disposable);
-            LaunchVRCommand.Subscribe(parameter => launchCommandAction(parameter, Launcher.LaunchDesktop));
+            LaunchDesktopCommand.Subscribe(parameter => launchCommandAction(parameter, Launcher.LaunchDesktop));
         }
 
         private CompositeDisposable Disposable { get; } = new CompositeDisposable();
