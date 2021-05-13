@@ -5,15 +5,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:VRCLauncher.ViewModels"
+        d:DataContext="{d:DesignInstance Type=vm:MainWindowViewModel}"
         mc:Ignorable="d"
         Title="VRCLauncher"
         Height="450"
         Width="600"
         ResizeMode="NoResize" >
-
-    <Window.DataContext>
-        <vm:MainWindowViewModel />
-    </Window.DataContext>
 
     <Grid Margin="10">
         <Grid.RowDefinitions>

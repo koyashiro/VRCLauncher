@@ -3,23 +3,22 @@ using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Windows;
 using VRCLauncher.Models;
-using VRCLauncher.Utils;
 
 namespace VRCLauncher.ViewModels
 {
-    public class MainWindowViewModel : BindableBase
+    public class MainWindowViewModel : BindableBase, IMainWindowViewModel
     {
         private bool _disposedValue;
+        private readonly ILauncher _launcher;
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        public MainWindowViewModel()
+        public MainWindowViewModel(ILauncher launcher)
         {
+            _launcher = launcher;
+
             var args = Environment.GetCommandLineArgs();
             var uri = args.Length > 1 ? args[1] : string.Empty;
             Uri = new ReactiveProperty<string>(uri).AddTo(Disposable);
@@ -51,7 +50,7 @@ namespace VRCLauncher.ViewModels
                     );
                     return launchParameter.IsValid();
                 });
-            void launchCommandAction(object parameter, Action<string, string> launchAction)
+            void launchCommandAction(object parameter, Action<string> launchAction)
             {
                 if (parameter is null)
                 {
@@ -63,16 +62,15 @@ namespace VRCLauncher.ViewModels
                     throw new ArgumentException($"{parameter} is not Window", nameof(parameter));
                 }
 
-                var config = Config.Load();
-                launchAction(config.VRChatPath, Uri.Value);
+                launchAction(Uri.Value);
                 window.Close();
             }
 
             LaunchVRCommand = new ReactiveCommand(canLaunchCommand).AddTo(Disposable);
-            LaunchVRCommand.Subscribe(parameter => launchCommandAction(parameter, Launcher.LaunchVR));
+            LaunchVRCommand.Subscribe(parameter => launchCommandAction(parameter, _launcher.LaunchVR));
 
             LaunchDesktopCommand = new ReactiveCommand(canLaunchCommand).AddTo(Disposable);
-            LaunchDesktopCommand.Subscribe(parameter => launchCommandAction(parameter, Launcher.LaunchDesktop));
+            LaunchDesktopCommand.Subscribe(parameter => launchCommandAction(parameter, _launcher.LaunchDesktop));
         }
 
         private CompositeDisposable Disposable { get; } = new CompositeDisposable();

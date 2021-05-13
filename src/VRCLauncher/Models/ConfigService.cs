@@ -2,29 +2,31 @@ using System;
 using System.IO;
 using System.Text.Json;
 
-namespace VRCLauncher.Utils
+namespace VRCLauncher.Models
 {
-    public class Config
+    public class ConfigService : IConfigService
     {
         private const string DEFAULT_VRCHAT_PATH = @"C:\Program Files (x86)\Steam\steamapps\common\VRChat\VRChat.exe";
-        private const string CONFIG_FILE_NAME = "VRCLauncher.json";
-        private static readonly string CONFIG_FILE_PATH = $"{Path.Join(AppDomain.CurrentDomain.BaseDirectory, CONFIG_FILE_NAME)}";
+        private readonly string _configFilePath;
 
-        public string VRChatPath { get; } = DEFAULT_VRCHAT_PATH;
-
-        public static bool ExistConfigFile()
+        public ConfigService(string configFilePath)
         {
-            return File.Exists(CONFIG_FILE_PATH);
+            _configFilePath = configFilePath;
         }
 
-        public static Config Load()
+        public bool ExistConfigFile()
+        {
+            return File.Exists(_configFilePath);
+        }
+
+        public Config Load()
         {
             if (!ExistConfigFile())
             {
                 return Initialize();
             }
 
-            var configJson = File.ReadAllText(CONFIG_FILE_PATH);
+            var configJson = File.ReadAllText(_configFilePath);
             try
             {
                 var config = JsonSerializer.Deserialize<Config>(configJson);
@@ -52,21 +54,16 @@ namespace VRCLauncher.Utils
             }
         }
 
-        public static void Save(Config config)
+        public void Save(Config config)
         {
-            if (config is null)
-            {
-                throw new ArgumentNullException(nameof(config));
-            }
-
             try
             {
                 var option = new JsonSerializerOptions
                 {
                     WriteIndented = true
                 };
-                var configJson = JsonSerializer.Serialize(config, option);
-                File.WriteAllText(CONFIG_FILE_PATH, configJson);
+                var configJson = JsonSerializer.Serialize(this, option);
+                File.WriteAllText(_configFilePath, configJson);
             }
             catch (PathTooLongException)
             {
@@ -79,9 +76,12 @@ namespace VRCLauncher.Utils
             }
         }
 
-        public static Config Initialize()
+        private Config Initialize()
         {
-            var config = new Config();
+            var config = new Config
+            {
+                VRChatPath = DEFAULT_VRCHAT_PATH
+            };
             Save(config);
             return config;
         }
