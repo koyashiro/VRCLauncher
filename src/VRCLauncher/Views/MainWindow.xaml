@@ -6,8 +6,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:VRCLauncher.ViewModels"
         mc:Ignorable="d"
-        Title="VRCLauncher" Height="450" Width="600"
-        ResizeMode="NoResize">
+        Title="VRCLauncher"
+        Height="450"
+        Width="600"
+        ResizeMode="NoResize" >
 
     <Window.DataContext>
         <vm:MainWindowViewModel />

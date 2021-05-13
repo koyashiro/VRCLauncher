@@ -1,3 +1,4 @@
+using Prism.Mvvm;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System;
@@ -11,7 +12,7 @@ using VRCLauncher.Utils;
 
 namespace VRCLauncher.ViewModels
 {
-    public class MainWindowViewModel : INotifyPropertyChanged, IDisposable
+    public class MainWindowViewModel : BindableBase
     {
         private bool _disposedValue;
 

@@ -1,19 +1,27 @@
+using Prism.Ioc;
 using System.Windows;
 using VRCLauncher.Utils;
+using VRCLauncher.Views;
 
 namespace VRCLauncher
 {
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App
     {
-        public App()
+        protected override Window CreateShell()
         {
             if (!Config.ExistConfigFile())
             {
                 Config.Initialize();
             }
+
+            return Container.Resolve<MainWindow>();
+        }
+
+        protected override void RegisterTypes(IContainerRegistry containerRegistry)
+        {
         }
     }
 }
