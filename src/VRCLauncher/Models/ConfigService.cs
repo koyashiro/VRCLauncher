@@ -7,16 +7,18 @@ namespace VRCLauncher.Models
     public class ConfigService : IConfigService
     {
         private const string DEFAULT_VRCHAT_PATH = @"C:\Program Files (x86)\Steam\steamapps\common\VRChat\VRChat.exe";
-        private readonly string _configFilePath;
+        private static readonly string CONFIG_FILE_PATH = $"{Path.Join(AppDomain.CurrentDomain.BaseDirectory, "VRCLauncher.json")}";
 
-        public ConfigService(string configFilePath)
+        private readonly IFileWrapper _fileWrapper;
+
+        public ConfigService(IFileWrapper fileWrapper)
         {
-            _configFilePath = configFilePath;
+            _fileWrapper = fileWrapper;
         }
 
         public bool ExistConfigFile()
         {
-            return File.Exists(_configFilePath);
+            return _fileWrapper.Exists(CONFIG_FILE_PATH);
         }
 
         public Config Load()
@@ -26,7 +28,7 @@ namespace VRCLauncher.Models
                 return Initialize();
             }
 
-            var configJson = File.ReadAllText(_configFilePath);
+            var configJson = _fileWrapper.ReadAllText(CONFIG_FILE_PATH);
             try
             {
                 var config = JsonSerializer.Deserialize<Config>(configJson);
@@ -60,10 +62,11 @@ namespace VRCLauncher.Models
             {
                 var option = new JsonSerializerOptions
                 {
-                    WriteIndented = true
+                    WriteIndented = true,
+                    
                 };
-                var configJson = JsonSerializer.Serialize(this, option);
-                File.WriteAllText(_configFilePath, configJson);
+                var configJson = JsonSerializer.Serialize(config, option);
+                _fileWrapper.WriteAllText(CONFIG_FILE_PATH, configJson);
             }
             catch (PathTooLongException)
             {
