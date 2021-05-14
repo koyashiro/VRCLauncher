@@ -25,7 +25,7 @@ namespace VRCLauncher.ViewModels
             Uri = new ReactiveProperty<string>(uri).AddTo(Disposable);
 
             WorldId = new ReactiveProperty<string>(string.Empty).AddTo(Disposable);
-            InstanceId = new ReactiveProperty<string>().AddTo(Disposable);
+            InstanceId = new ReactiveProperty<string>(string.Empty).AddTo(Disposable);
             InstanceType = new ReactiveProperty<InstanceType>(Models.InstanceType.Public).AddTo(Disposable);
             InstanceOwnerId = new ReactiveProperty<string?>().AddTo(Disposable);
             Nonce = new ReactiveProperty<string?>().AddTo(Disposable);
@@ -57,10 +57,10 @@ namespace VRCLauncher.ViewModels
                 _windowWrapper.Close();
             }
 
-            LaunchVRCommand = new ReactiveCommand(canLaunchCommand).AddTo(Disposable);
+            LaunchVRCommand = new ReactiveCommand(canLaunchCommand, false).AddTo(Disposable);
             LaunchVRCommand.Subscribe(parameter => launchCommandAction(parameter, _launcher.LaunchVR));
 
-            LaunchDesktopCommand = new ReactiveCommand(canLaunchCommand).AddTo(Disposable);
+            LaunchDesktopCommand = new ReactiveCommand(canLaunchCommand, false).AddTo(Disposable);
             LaunchDesktopCommand.Subscribe(parameter => launchCommandAction(parameter, _launcher.LaunchDesktop));
         }
 
