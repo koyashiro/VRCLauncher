@@ -1,8 +1,7 @@
-using Xunit;
 using Moq;
-using VRCLauncher.Models;
-using System.Text.Json;
 using System.Diagnostics;
+using VRCLauncher.Models;
+using Xunit;
 
 namespace VRCLauncher.Test.Models
 {

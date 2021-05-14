@@ -63,7 +63,7 @@ namespace VRCLauncher.Models
                 var option = new JsonSerializerOptions
                 {
                     WriteIndented = true,
-                    
+
                 };
                 var configJson = JsonSerializer.Serialize(config, option);
                 _fileWrapper.WriteAllText(CONFIG_FILE_PATH, configJson);

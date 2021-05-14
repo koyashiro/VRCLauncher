@@ -1,7 +1,7 @@
-using Xunit;
 using Moq;
-using VRCLauncher.ViewModels;
 using VRCLauncher.Models;
+using VRCLauncher.ViewModels;
+using Xunit;
 using Xunit.Sdk;
 
 namespace VRCLauncher.Test.Models
@@ -23,7 +23,7 @@ namespace VRCLauncher.Test.Models
             var mainWindowViewModel = new MainWindowViewModel(mockLauncher.Object);
             mainWindowViewModel.Uri.Value = uri;
 
-            Assert.Equal(worldId , mainWindowViewModel.WorldId.Value);
+            Assert.Equal(worldId, mainWindowViewModel.WorldId.Value);
             Assert.Equal(instanceId, mainWindowViewModel.InstanceId.Value);
             Assert.Equal(instanceType, mainWindowViewModel.InstanceType.Value);
             Assert.Equal(instanceOwnerId, mainWindowViewModel.InstanceOwnerId.Value);
@@ -45,7 +45,7 @@ namespace VRCLauncher.Test.Models
             var mainWindowViewModel = new MainWindowViewModel(mockLauncher.Object);
             mainWindowViewModel.Uri.Value = uri;
 
-            Assert.Equal(worldId , mainWindowViewModel.WorldId.Value);
+            Assert.Equal(worldId, mainWindowViewModel.WorldId.Value);
             Assert.Equal(instanceId, mainWindowViewModel.InstanceId.Value);
             Assert.Equal(instanceType, mainWindowViewModel.InstanceType.Value);
             Assert.Equal(instanceOwnerId, mainWindowViewModel.InstanceOwnerId.Value);
@@ -67,7 +67,7 @@ namespace VRCLauncher.Test.Models
             var mainWindowViewModel = new MainWindowViewModel(mockLauncher.Object);
             mainWindowViewModel.Uri.Value = uri;
 
-            Assert.Equal(worldId , mainWindowViewModel.WorldId.Value);
+            Assert.Equal(worldId, mainWindowViewModel.WorldId.Value);
             Assert.Equal(instanceId, mainWindowViewModel.InstanceId.Value);
             Assert.Equal(instanceType, mainWindowViewModel.InstanceType.Value);
             Assert.Equal(instanceOwnerId, mainWindowViewModel.InstanceOwnerId.Value);
@@ -89,7 +89,7 @@ namespace VRCLauncher.Test.Models
             var mainWindowViewModel = new MainWindowViewModel(mockLauncher.Object);
             mainWindowViewModel.Uri.Value = uri;
 
-            Assert.Equal(worldId , mainWindowViewModel.WorldId.Value);
+            Assert.Equal(worldId, mainWindowViewModel.WorldId.Value);
             Assert.Equal(instanceId, mainWindowViewModel.InstanceId.Value);
             Assert.Equal(instanceType, mainWindowViewModel.InstanceType.Value);
             Assert.Equal(instanceOwnerId, mainWindowViewModel.InstanceOwnerId.Value);
@@ -111,7 +111,7 @@ namespace VRCLauncher.Test.Models
             var mainWindowViewModel = new MainWindowViewModel(mockLauncher.Object);
             mainWindowViewModel.Uri.Value = uri;
 
-            Assert.Equal(worldId , mainWindowViewModel.WorldId.Value);
+            Assert.Equal(worldId, mainWindowViewModel.WorldId.Value);
             Assert.Equal(instanceId, mainWindowViewModel.InstanceId.Value);
             Assert.Equal(instanceType, mainWindowViewModel.InstanceType.Value);
             Assert.Equal(instanceOwnerId, mainWindowViewModel.InstanceOwnerId.Value);
@@ -129,10 +129,8 @@ namespace VRCLauncher.Test.Models
             var actualArguments = string.Empty;
 
             var mockLauncher = new Mock<ILauncher>();
-            mockLauncher.Setup(ml => ml.LaunchVR(It.IsAny<string>()))
-                .Callback<string>(arguments => actualArguments = arguments);
-            mockLauncher.Setup(ml => ml.LaunchDesktop(It.IsAny<string>()))
-                .Callback<string>(_ => throw new XunitException());
+            mockLauncher.Setup(ml => ml.LaunchVR(expectedArguments)).Verifiable();
+            mockLauncher.Setup(ml => ml.LaunchDesktop(It.IsAny<string>())).Throws<XunitException>();
 
             var mainWindowViewModel = new MainWindowViewModel(mockLauncher.Object);
             Assert.False(mainWindowViewModel.LaunchVRCommand.CanExecute());
