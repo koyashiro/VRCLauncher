@@ -4,7 +4,7 @@ using VRCLauncher.ViewModels;
 using Xunit;
 using Xunit.Sdk;
 
-namespace VRCLauncher.Test.Models
+namespace VRCLauncher.Test.ViewModels
 {
     public class MainWindowViewModelTest
     {
