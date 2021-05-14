@@ -1,8 +1,10 @@
 using System;
 using System.IO;
 using System.Text.Json;
+using VRCLauncher.Models;
+using VRCLauncher.Wrappers;
 
-namespace VRCLauncher.Models
+namespace VRCLauncher.Services
 {
     public class ConfigService : IConfigService
     {

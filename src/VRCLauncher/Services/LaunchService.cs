@@ -1,14 +1,15 @@
 using System.ComponentModel;
 using System.Diagnostics;
+using VRCLauncher.Wrappers;
 
-namespace VRCLauncher.Models
+namespace VRCLauncher.Services
 {
-    public class Launcher : ILauncher
+    public class LaunchService : ILaunchService
     {
         private readonly IConfigService _configService;
         private readonly IProcessWrapper _processWrapper;
 
-        public Launcher(IConfigService configService, IProcessWrapper processWrapper)
+        public LaunchService(IConfigService configService, IProcessWrapper processWrapper)
         {
             _configService = configService;
             _processWrapper = processWrapper;

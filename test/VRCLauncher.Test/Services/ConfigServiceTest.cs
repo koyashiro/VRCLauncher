@@ -3,10 +3,12 @@ using System;
 using System.IO;
 using System.Text.Json;
 using VRCLauncher.Models;
+using VRCLauncher.Services;
+using VRCLauncher.Wrappers;
 using Xunit;
 using Xunit.Sdk;
 
-namespace VRCLauncher.Test.Models
+namespace VRCLauncher.Test.Services
 {
     public class ConfigServiceTest
     {

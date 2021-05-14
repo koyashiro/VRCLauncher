@@ -1,6 +1,8 @@
 using Moq;
 using VRCLauncher.Models;
+using VRCLauncher.Services;
 using VRCLauncher.ViewModels;
+using VRCLauncher.Wrappers;
 using Xunit;
 using Xunit.Sdk;
 
@@ -16,7 +18,7 @@ namespace VRCLauncher.Test.ViewModels
         {
             var uri = $"vrchat://launch/?ref=vrchat.com&id={WORLD_ID}:{INSTANCE_ID}"; ;
 
-            var mockLauncher = new Mock<ILauncher>();
+            var mockLauncher = new Mock<ILaunchService>();
             var mockWindowWrapper = new Mock<IWindowWrapper>();
 
             var mainWindowViewModel = new MainWindowViewModel(mockLauncher.Object, mockWindowWrapper.Object);
@@ -37,7 +39,7 @@ namespace VRCLauncher.Test.ViewModels
             var nonce = "0000000000000000000000000000000000000000000000000000000000000000";
             var uri = $"vrchat://launch/?ref=vrchat.com&id={WORLD_ID}:{INSTANCE_ID}~hidden({instanceOwnerId})~nonce({nonce})";
 
-            var mockLauncher = new Mock<ILauncher>();
+            var mockLauncher = new Mock<ILaunchService>();
             var mockWindowWrapper = new Mock<IWindowWrapper>();
 
             var mainWindowViewModel = new MainWindowViewModel(mockLauncher.Object, mockWindowWrapper.Object);
@@ -58,7 +60,7 @@ namespace VRCLauncher.Test.ViewModels
             var nonce = "0000000000000000000000000000000000000000000000000000000000000000";
             var uri = $"vrchat://launch/?ref=vrchat.com&id={WORLD_ID}:{INSTANCE_ID}~friends({instanceOwnerId})~nonce({nonce})";
 
-            var mockLauncher = new Mock<ILauncher>();
+            var mockLauncher = new Mock<ILaunchService>();
             var mockWindowWrapper = new Mock<IWindowWrapper>();
 
             var mainWindowViewModel = new MainWindowViewModel(mockLauncher.Object, mockWindowWrapper.Object);
@@ -78,7 +80,7 @@ namespace VRCLauncher.Test.ViewModels
             var instanceOwnerId = "usr_00000000-0000-0000-0000-000000000000";
             var nonce = "0000000000000000000000000000000000000000000000000000000000000000";
             var uri = $"vrchat://launch/?ref=vrchat.com&id={WORLD_ID}:{INSTANCE_ID}~private({instanceOwnerId})~nonce({nonce})~canRequestInvite";
-            var mockLauncher = new Mock<ILauncher>();
+            var mockLauncher = new Mock<ILaunchService>();
             var mockWindowWrapper = new Mock<IWindowWrapper>();
 
             var mainWindowViewModel = new MainWindowViewModel(mockLauncher.Object, mockWindowWrapper.Object);
@@ -99,7 +101,7 @@ namespace VRCLauncher.Test.ViewModels
             var nonce = "0000000000000000000000000000000000000000000000000000000000000000";
             var uri = $"vrchat://launch/?ref=vrchat.com&id={WORLD_ID}:{INSTANCE_ID}~private({instanceOwnerId})~nonce({nonce})";
 
-            var mockLauncher = new Mock<ILauncher>();
+            var mockLauncher = new Mock<ILaunchService>();
             var mockWindowWrapper = new Mock<IWindowWrapper>();
 
             var mainWindowViewModel = new MainWindowViewModel(mockLauncher.Object, mockWindowWrapper.Object);
@@ -117,7 +119,7 @@ namespace VRCLauncher.Test.ViewModels
         {
             var uri = $"vrchat://launch/?ref=vrchat.com&id={WORLD_ID}:{INSTANCE_ID}";
 
-            var mockLauncher = new Mock<ILauncher>();
+            var mockLauncher = new Mock<ILaunchService>();
             mockLauncher.Setup(l => l.LaunchVR(uri)).Verifiable();
             mockLauncher.Setup(l => l.LaunchDesktop(It.IsAny<string>())).Throws<XunitException>();
 
@@ -143,7 +145,7 @@ namespace VRCLauncher.Test.ViewModels
         {
             var uri = $"vrchat://launch/?ref=vrchat.com&id={WORLD_ID}:{INSTANCE_ID}";
 
-            var mockLauncher = new Mock<ILauncher>();
+            var mockLauncher = new Mock<ILaunchService>();
             mockLauncher.Setup(l => l.LaunchVR(It.IsAny<string>())).Throws<XunitException>();
             mockLauncher.Setup(l => l.LaunchDesktop(uri)).Verifiable();
 

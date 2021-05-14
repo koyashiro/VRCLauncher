@@ -1,6 +1,6 @@
 using System.Windows;
 
-namespace VRCLauncher.Models
+namespace VRCLauncher.Wrappers
 {
     public class WindowWrapper : IWindowWrapper
     {

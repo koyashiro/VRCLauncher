@@ -1,11 +1,13 @@
 using Moq;
 using System.Diagnostics;
 using VRCLauncher.Models;
+using VRCLauncher.Services;
+using VRCLauncher.Wrappers;
 using Xunit;
 
-namespace VRCLauncher.Test.Models
+namespace VRCLauncher.Test.Services
 {
-    public class LauncherTest
+    public class LaunchServiceTest
     {
         private const string ARGUMENTS = "vrchat://launch";
         private const string VRCHAT_PATH = @"C:\Program Files (x85)\Steam\steamapps\common\VRChat\VRChat.exe";
@@ -32,8 +34,8 @@ namespace VRCLauncher.Test.Models
                     actualArguments = psi.Arguments;
                 });
 
-            var launcher = new Launcher(mockConfigService.Object, mockProcessWrapper.Object);
-            launcher.LaunchVR(expectedArguments);
+            var launchService = new LaunchService(mockConfigService.Object, mockProcessWrapper.Object);
+            launchService.LaunchVR(expectedArguments);
 
             Assert.Equal(expectedFileName, actualFileName);
             Assert.Equal(expectedArguments, expectedArguments);
@@ -61,8 +63,8 @@ namespace VRCLauncher.Test.Models
                     actualArguments = psi.Arguments;
                 });
 
-            var launcher = new Launcher(mockConfigService.Object, mockProcessWrapper.Object);
-            launcher.LaunchVR(expectedArguments);
+            var launchService = new LaunchService(mockConfigService.Object, mockProcessWrapper.Object);
+            launchService.LaunchVR(expectedArguments);
 
             Assert.Equal(expectedFileName, actualFileName);
             Assert.Equal(expectedArguments, expectedArguments);

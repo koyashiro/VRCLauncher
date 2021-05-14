@@ -1,4 +1,4 @@
-namespace VRCLauncher.Models
+namespace VRCLauncher.Wrappers
 {
     public interface IFileWrapper
     {

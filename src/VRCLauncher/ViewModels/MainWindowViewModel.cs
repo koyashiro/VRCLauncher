@@ -6,16 +6,18 @@ using System.Collections.Generic;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using VRCLauncher.Models;
+using VRCLauncher.Services;
+using VRCLauncher.Wrappers;
 
 namespace VRCLauncher.ViewModels
 {
     public class MainWindowViewModel : BindableBase, IMainWindowViewModel
     {
         private bool _disposedValue;
-        private readonly ILauncher _launcher;
+        private readonly ILaunchService _launcher;
         private readonly IWindowWrapper _windowWrapper;
 
-        public MainWindowViewModel(ILauncher launcher, IWindowWrapper windowWrapper)
+        public MainWindowViewModel(ILaunchService launcher, IWindowWrapper windowWrapper)
         {
             _launcher = launcher;
             _windowWrapper = windowWrapper;

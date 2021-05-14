@@ -1,6 +1,7 @@
 using System.Windows;
-using VRCLauncher.Models;
+using VRCLauncher.Services;
 using VRCLauncher.ViewModels;
+using VRCLauncher.Wrappers;
 
 namespace VRCLauncher.Views
 {
@@ -9,7 +10,7 @@ namespace VRCLauncher.Views
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow(ILauncher launcher)
+        public MainWindow(ILaunchService launcher)
         {
             InitializeComponent();
             DataContext = new MainWindowViewModel(launcher, new WindowWrapper(this));

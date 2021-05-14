@@ -1,6 +1,6 @@
 using System.Diagnostics;
 
-namespace VRCLauncher.Models
+namespace VRCLauncher.Wrappers
 {
     public class ProcessWrapper : IProcessWrapper
     {

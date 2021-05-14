@@ -1,4 +1,6 @@
-namespace VRCLauncher.Models
+using VRCLauncher.Models;
+
+namespace VRCLauncher.Services
 {
     public interface IConfigService
     {

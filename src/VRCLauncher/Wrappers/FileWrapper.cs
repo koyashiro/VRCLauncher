@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace VRCLauncher.Models
+namespace VRCLauncher.Wrappers
 {
     public class FileWrapper : IFileWrapper
     {
