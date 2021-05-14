@@ -7,10 +7,10 @@ namespace VRCLauncher.Models
 {
     public class LaunchParameter
     {
-        private static readonly string REGEX_UUID = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
-        private static readonly string REGEX_WORLD_ID = $"wrld_{REGEX_UUID}";
-        private static readonly string REGEX_USER_ID = $"usr_{REGEX_UUID}";
-        private static readonly string REGEX_NONCE = "[0-9A-z]+";
+        private const string REGEX_UUID = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
+        private const string REGEX_WORLD_ID = "wrld_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
+        private const string REGEX_USER_ID = "usr_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
+        private const string REGEX_NONCE = "[0-9A-z]+";
 
         public LaunchParameter(
             string worldId,
@@ -159,7 +159,7 @@ namespace VRCLauncher.Models
 
         private static (InstanceType instanceType, string? instanceOwnerId) ParseInstanceTypeAndInstanceOwnerId(string arg)
         {
-            var GROUP_NAME_USER_ID = "userId";
+            const string GROUP_NAME_USER_ID = "userId";
 
             // Invite Only, Invite Plus
             var privateMatch = Regex.Match(arg, $@"~private\((?<{GROUP_NAME_USER_ID}>{REGEX_USER_ID})\)(~|$)");
@@ -197,7 +197,7 @@ namespace VRCLauncher.Models
 
         private static bool TryParseNonce(string arg, [MaybeNullWhen(false)] out string nonce)
         {
-            var GROUP_NAME_NONCE = "userId";
+            const string GROUP_NAME_NONCE = "userId";
 
             var match = Regex.Match(arg, $@"~nonce\((?<{GROUP_NAME_NONCE}>{REGEX_NONCE})\)(~|$)");
             if (match.Success)
