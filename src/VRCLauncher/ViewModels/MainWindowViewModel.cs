@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Windows;
 using VRCLauncher.Models;
 
 namespace VRCLauncher.ViewModels
@@ -14,10 +13,12 @@ namespace VRCLauncher.ViewModels
     {
         private bool _disposedValue;
         private readonly ILauncher _launcher;
+        private readonly IWindowWrapper _windowWrapper;
 
-        public MainWindowViewModel(ILauncher launcher)
+        public MainWindowViewModel(ILauncher launcher, IWindowWrapper windowWrapper)
         {
             _launcher = launcher;
+            _windowWrapper = windowWrapper;
 
             var args = Environment.GetCommandLineArgs();
             var uri = args.Length > 1 ? args[1] : string.Empty;
@@ -52,24 +53,14 @@ namespace VRCLauncher.ViewModels
                 });
             void launchCommandAction(object parameter, Action<string> launchAction)
             {
-                if (parameter is null)
-                {
-                    throw new ArgumentNullException(nameof(parameter));
-                }
-
-                if (parameter is not Window window)
-                {
-                    throw new ArgumentException($"{parameter} is not Window", nameof(parameter));
-                }
-
                 launchAction(Uri.Value);
-                window.Close();
+                _windowWrapper.Close();
             }
 
-            LaunchVRCommand = new ReactiveCommand<Window>(canLaunchCommand).AddTo(Disposable);
+            LaunchVRCommand = new ReactiveCommand(canLaunchCommand).AddTo(Disposable);
             LaunchVRCommand.Subscribe(parameter => launchCommandAction(parameter, _launcher.LaunchVR));
 
-            LaunchDesktopCommand = new ReactiveCommand<Window>(canLaunchCommand).AddTo(Disposable);
+            LaunchDesktopCommand = new ReactiveCommand(canLaunchCommand).AddTo(Disposable);
             LaunchDesktopCommand.Subscribe(parameter => launchCommandAction(parameter, _launcher.LaunchDesktop));
         }
 
@@ -82,8 +73,8 @@ namespace VRCLauncher.ViewModels
         public ReactiveProperty<string?> InstanceOwnerId { get; }
         public ReactiveProperty<string?> Nonce { get; }
 
-        public ReactiveCommand<Window> LaunchVRCommand { get; }
-        public ReactiveCommand<Window> LaunchDesktopCommand { get; }
+        public ReactiveCommand LaunchVRCommand { get; }
+        public ReactiveCommand LaunchDesktopCommand { get; }
 
         public Dictionary<InstanceType, string> InstanceTypeItems => new()
         {

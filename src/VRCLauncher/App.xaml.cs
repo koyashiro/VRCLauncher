@@ -1,7 +1,6 @@
 using Prism.Ioc;
 using System.Windows;
 using VRCLauncher.Models;
-using VRCLauncher.ViewModels;
 using VRCLauncher.Views;
 
 namespace VRCLauncher
@@ -22,7 +21,6 @@ namespace VRCLauncher
             containerRegistry.RegisterScoped<IProcessWrapper, ProcessWrapper>();
             containerRegistry.RegisterScoped<IConfigService, ConfigService>();
             containerRegistry.RegisterScoped<ILauncher, Launcher>();
-            containerRegistry.RegisterForNavigation<IMainWindowViewModel, MainWindowViewModel>();
         }
     }
 }

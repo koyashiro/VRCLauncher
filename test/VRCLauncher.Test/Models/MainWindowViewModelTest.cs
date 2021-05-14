@@ -19,8 +19,9 @@ namespace VRCLauncher.Test.Models
             var uri = $"vrchat://launch/?ref=vrchat.com&id={worldId}:{instanceId}"; ;
 
             var mockLauncher = new Mock<ILauncher>();
+            var mockWindowWrapper = new Mock<IWindowWrapper>();
 
-            var mainWindowViewModel = new MainWindowViewModel(mockLauncher.Object);
+            var mainWindowViewModel = new MainWindowViewModel(mockLauncher.Object, mockWindowWrapper.Object);
             mainWindowViewModel.Uri.Value = uri;
 
             Assert.Equal(worldId, mainWindowViewModel.WorldId.Value);
@@ -41,8 +42,9 @@ namespace VRCLauncher.Test.Models
             var uri = $"vrchat://launch/?ref=vrchat.com&id={worldId}:{instanceId}~hidden({instanceOwnerId})~nonce({nonce})";
 
             var mockLauncher = new Mock<ILauncher>();
+            var mockWindowWrapper = new Mock<IWindowWrapper>();
 
-            var mainWindowViewModel = new MainWindowViewModel(mockLauncher.Object);
+            var mainWindowViewModel = new MainWindowViewModel(mockLauncher.Object, mockWindowWrapper.Object);
             mainWindowViewModel.Uri.Value = uri;
 
             Assert.Equal(worldId, mainWindowViewModel.WorldId.Value);
@@ -63,8 +65,9 @@ namespace VRCLauncher.Test.Models
             var uri = $"vrchat://launch/?ref=vrchat.com&id={worldId}:{instanceId}~friends({instanceOwnerId})~nonce({nonce})";
 
             var mockLauncher = new Mock<ILauncher>();
+            var mockWindowWrapper = new Mock<IWindowWrapper>();
 
-            var mainWindowViewModel = new MainWindowViewModel(mockLauncher.Object);
+            var mainWindowViewModel = new MainWindowViewModel(mockLauncher.Object, mockWindowWrapper.Object);
             mainWindowViewModel.Uri.Value = uri;
 
             Assert.Equal(worldId, mainWindowViewModel.WorldId.Value);
@@ -85,8 +88,9 @@ namespace VRCLauncher.Test.Models
             var uri = $"vrchat://launch/?ref=vrchat.com&id={worldId}:{instanceId}~private({instanceOwnerId})~nonce({nonce})~canRequestInvite";
 
             var mockLauncher = new Mock<ILauncher>();
+            var mockWindowWrapper = new Mock<IWindowWrapper>();
 
-            var mainWindowViewModel = new MainWindowViewModel(mockLauncher.Object);
+            var mainWindowViewModel = new MainWindowViewModel(mockLauncher.Object, mockWindowWrapper.Object);
             mainWindowViewModel.Uri.Value = uri;
 
             Assert.Equal(worldId, mainWindowViewModel.WorldId.Value);
@@ -107,8 +111,9 @@ namespace VRCLauncher.Test.Models
             var uri = $"vrchat://launch/?ref=vrchat.com&id={worldId}:{instanceId}~private({instanceOwnerId})~nonce({nonce})";
 
             var mockLauncher = new Mock<ILauncher>();
+            var mockWindowWrapper = new Mock<IWindowWrapper>();
 
-            var mainWindowViewModel = new MainWindowViewModel(mockLauncher.Object);
+            var mainWindowViewModel = new MainWindowViewModel(mockLauncher.Object, mockWindowWrapper.Object);
             mainWindowViewModel.Uri.Value = uri;
 
             Assert.Equal(worldId, mainWindowViewModel.WorldId.Value);
@@ -125,14 +130,14 @@ namespace VRCLauncher.Test.Models
             var instanceId = "00000";
             var uri = $"vrchat://launch/?ref=vrchat.com&id={worldId}:{instanceId}";
 
-            var expectedArguments = uri;
-            var actualArguments = string.Empty;
-
             var mockLauncher = new Mock<ILauncher>();
-            mockLauncher.Setup(ml => ml.LaunchVR(expectedArguments)).Verifiable();
+            mockLauncher.Setup(ml => ml.LaunchVR(uri)).Verifiable();
             mockLauncher.Setup(ml => ml.LaunchDesktop(It.IsAny<string>())).Throws<XunitException>();
 
-            var mainWindowViewModel = new MainWindowViewModel(mockLauncher.Object);
+            var mockWindowWrapper = new Mock<IWindowWrapper>();
+            mockWindowWrapper.Setup(mw => mw.Close()).Verifiable();
+
+            var mainWindowViewModel = new MainWindowViewModel(mockLauncher.Object, mockWindowWrapper.Object);
             Assert.False(mainWindowViewModel.LaunchVRCommand.CanExecute());
             Assert.False(mainWindowViewModel.LaunchDesktopCommand.CanExecute());
 
@@ -140,9 +145,10 @@ namespace VRCLauncher.Test.Models
             Assert.True(mainWindowViewModel.LaunchVRCommand.CanExecute());
             Assert.True(mainWindowViewModel.LaunchDesktopCommand.CanExecute());
 
-            // TODO: fix Window close action
-            // mainWindowViewModel.LaunchVRCommand.Execute();
-            // Assert.Equal(expectedArguments, actualArguments);
+            mainWindowViewModel.LaunchVRCommand.Execute();
+
+            mockLauncher.Verify();
+            mockWindowWrapper.Verify();
         }
 
         [Fact]
@@ -152,16 +158,14 @@ namespace VRCLauncher.Test.Models
             var instanceId = "00000";
             var uri = $"vrchat://launch/?ref=vrchat.com&id={worldId}:{instanceId}";
 
-            var expectedArguments = uri;
-            var actualArguments = string.Empty;
-
             var mockLauncher = new Mock<ILauncher>();
-            mockLauncher.Setup(ml => ml.LaunchVR(It.IsAny<string>()))
-                .Callback<string>(_ => throw new XunitException());
-            mockLauncher.Setup(ml => ml.LaunchDesktop(It.IsAny<string>()))
-                .Callback<string>(arguments => actualArguments = arguments);
+            mockLauncher.Setup(ml => ml.LaunchVR(It.IsAny<string>())).Throws<XunitException>();
+            mockLauncher.Setup(ml => ml.LaunchDesktop(uri)).Verifiable();
 
-            var mainWindowViewModel = new MainWindowViewModel(mockLauncher.Object);
+            var mockWindowWrapper = new Mock<IWindowWrapper>();
+            mockWindowWrapper.Setup(mw => mw.Close()).Verifiable();
+
+            var mainWindowViewModel = new MainWindowViewModel(mockLauncher.Object, mockWindowWrapper.Object);
             Assert.False(mainWindowViewModel.LaunchVRCommand.CanExecute());
             Assert.False(mainWindowViewModel.LaunchDesktopCommand.CanExecute());
 
@@ -169,9 +173,10 @@ namespace VRCLauncher.Test.Models
             Assert.True(mainWindowViewModel.LaunchVRCommand.CanExecute());
             Assert.True(mainWindowViewModel.LaunchDesktopCommand.CanExecute());
 
-            // TODO: fix Window close action
-            // mainWindowViewModel.LaunchDesktopCommand.Execute();
-            // Assert.Equal(expectedArguments, actualArguments);
+            mainWindowViewModel.LaunchDesktopCommand.Execute();
+
+            mockLauncher.Verify();
+            mockWindowWrapper.Verify();
         }
     }
 }
