@@ -66,10 +66,10 @@ namespace VRCLauncher.ViewModels
                 window.Close();
             }
 
-            LaunchVRCommand = new ReactiveCommand(canLaunchCommand).AddTo(Disposable);
+            LaunchVRCommand = new ReactiveCommand<Window>(canLaunchCommand).AddTo(Disposable);
             LaunchVRCommand.Subscribe(parameter => launchCommandAction(parameter, _launcher.LaunchVR));
 
-            LaunchDesktopCommand = new ReactiveCommand(canLaunchCommand).AddTo(Disposable);
+            LaunchDesktopCommand = new ReactiveCommand<Window>(canLaunchCommand).AddTo(Disposable);
             LaunchDesktopCommand.Subscribe(parameter => launchCommandAction(parameter, _launcher.LaunchDesktop));
         }
 
@@ -82,8 +82,8 @@ namespace VRCLauncher.ViewModels
         public ReactiveProperty<string?> InstanceOwnerId { get; }
         public ReactiveProperty<string?> Nonce { get; }
 
-        public ReactiveCommand LaunchVRCommand { get; }
-        public ReactiveCommand LaunchDesktopCommand { get; }
+        public ReactiveCommand<Window> LaunchVRCommand { get; }
+        public ReactiveCommand<Window> LaunchDesktopCommand { get; }
 
         public Dictionary<InstanceType, string> InstanceTypeItems => new()
         {

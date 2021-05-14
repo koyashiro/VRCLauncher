@@ -2,6 +2,7 @@ using Reactive.Bindings;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Windows;
 using VRCLauncher.Models;
 
 namespace VRCLauncher.ViewModels
@@ -14,8 +15,8 @@ namespace VRCLauncher.ViewModels
         ReactiveProperty<InstanceType> InstanceType { get; }
         ReactiveProperty<string?> InstanceOwnerId { get; }
         ReactiveProperty<string?> Nonce { get; }
-        ReactiveCommand LaunchVRCommand { get; }
-        ReactiveCommand LaunchDesktopCommand { get; }
+        ReactiveCommand<Window> LaunchVRCommand { get; }
+        ReactiveCommand<Window> LaunchDesktopCommand { get; }
         Dictionary<InstanceType, string> InstanceTypeItems { get; }
     }
 }
