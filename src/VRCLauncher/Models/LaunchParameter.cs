@@ -17,7 +17,7 @@ namespace VRCLauncher.Models
             string instanceId,
             InstanceType instanceType,
             string? instanceOwnerId,
-            string nonce
+            string? nonce
         )
         {
             WorldId = worldId;
@@ -31,14 +31,21 @@ namespace VRCLauncher.Models
         public string InstanceId { get; set; }
         public InstanceType InstanceType { get; set; }
         public string? InstanceOwnerId { get; set; }
-        public string Nonce { get; set; }
+        public string? Nonce { get; set; }
 
         public bool IsValid()
         {
-            return IsValidWorldId(WorldId)
-                && IsValidInstanceType(InstanceType)
-                && IsValidUserId(InstanceOwnerId)
-                && IsValidNonce(Nonce);
+            if (InstanceType == InstanceType.Public)
+            {
+                return IsValidWorldId(WorldId) && IsValidInstanceType(InstanceType);
+            }
+            else
+            {
+                return IsValidWorldId(WorldId)
+                    && IsValidInstanceType(InstanceType)
+                    && IsValidUserId(InstanceOwnerId)
+                    && IsValidNonce(Nonce);
+            }
         }
 
         private static bool IsValidWorldId(string worldId)
@@ -61,8 +68,13 @@ namespace VRCLauncher.Models
             return Regex.IsMatch(userId, REGEX_USER_ID);
         }
 
-        private static bool IsValidNonce(string nonce)
+        private static bool IsValidNonce(string? nonce)
         {
+            if (nonce is null)
+            {
+                return false;
+            }
+
             return Regex.IsMatch(nonce, REGEX_NONCE);
         }
 
@@ -116,8 +128,11 @@ namespace VRCLauncher.Models
 
             if (!TryParseNonce(arg, out var nonce))
             {
-                launchParameter = default;
-                return false;
+                if (instanceType != InstanceType.Public)
+                {
+                    launchParameter = default;
+                    return false;
+                }
             }
 
             launchParameter = new LaunchParameter(worldId, instanceId, instanceType, instanceOwnerId, nonce);

@@ -27,7 +27,7 @@ namespace VRCLauncher.ViewModels
             InstanceId = new ReactiveProperty<string>().AddTo(Disposable);
             InstanceType = new ReactiveProperty<InstanceType>(Models.InstanceType.Public).AddTo(Disposable);
             InstanceOwnerId = new ReactiveProperty<string?>().AddTo(Disposable);
-            Nonce = new ReactiveProperty<string>(string.Empty).AddTo(Disposable);
+            Nonce = new ReactiveProperty<string?>().AddTo(Disposable);
 
             var launchParameterObservables = Observable.Merge(
                 WorldId.ToUnit(),
@@ -80,7 +80,7 @@ namespace VRCLauncher.ViewModels
         public ReactiveProperty<string> InstanceId { get; }
         public ReactiveProperty<InstanceType> InstanceType { get; }
         public ReactiveProperty<string?> InstanceOwnerId { get; }
-        public ReactiveProperty<string> Nonce { get; }
+        public ReactiveProperty<string?> Nonce { get; }
 
         public ReactiveCommand LaunchVRCommand { get; }
         public ReactiveCommand LaunchDesktopCommand { get; }
