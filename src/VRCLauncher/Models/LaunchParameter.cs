@@ -50,7 +50,7 @@ namespace VRCLauncher.Models
 
         private static bool IsValidWorldId(string worldId)
         {
-            return Regex.IsMatch(worldId, REGEX_WORLD_ID);
+            return Regex.IsMatch(worldId, $"^{REGEX_WORLD_ID}$");
         }
 
         private static bool IsValidInstanceType(InstanceType instanceType)
@@ -65,7 +65,7 @@ namespace VRCLauncher.Models
                 return false;
             }
 
-            return Regex.IsMatch(userId, REGEX_USER_ID);
+            return Regex.IsMatch(userId, $"^{REGEX_USER_ID}$");
         }
 
         private static bool IsValidNonce(string? nonce)
@@ -75,7 +75,7 @@ namespace VRCLauncher.Models
                 return false;
             }
 
-            return Regex.IsMatch(nonce, REGEX_NONCE);
+            return Regex.IsMatch(nonce, $"^{REGEX_NONCE}$");
         }
 
         public override string ToString()
