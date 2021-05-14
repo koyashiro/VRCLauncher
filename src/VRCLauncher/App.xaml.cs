@@ -19,6 +19,7 @@ namespace VRCLauncher
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterScoped<IFileWrapper, FileWrapper>();
+            containerRegistry.RegisterScoped<IProcessWrapper, ProcessWrapper>();
             containerRegistry.RegisterScoped<IConfigService, ConfigService>();
             containerRegistry.RegisterScoped<ILauncher, Launcher>();
             containerRegistry.RegisterForNavigation<IMainWindowViewModel, MainWindowViewModel>();

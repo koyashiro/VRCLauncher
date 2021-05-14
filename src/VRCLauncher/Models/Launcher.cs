@@ -6,10 +6,12 @@ namespace VRCLauncher.Models
     public class Launcher : ILauncher
     {
         private readonly IConfigService _configService;
+        private readonly IProcessWrapper _processWrapper;
 
-        public Launcher(IConfigService configService)
+        public Launcher(IConfigService configService, IProcessWrapper processWrapper)
         {
             _configService = configService;
+            _processWrapper = processWrapper;
         }
 
         public void LaunchVR(string arguments)
@@ -33,7 +35,7 @@ namespace VRCLauncher.Models
 
             var config = _configService.Load();
             var processStartInfo = new ProcessStartInfo(config.VRChatPath, arguments);
-            Process.Start(processStartInfo);
+            _processWrapper.Start(processStartInfo);
         }
 
         private enum LaunchMode
