@@ -18,6 +18,21 @@ namespace VRCLauncher.Services
             _fileWrapper = fileWrapper;
         }
 
+        public void Initialize()
+        {
+            if (Exists())
+            {
+                return;
+            }
+
+            var config = new Config
+            {
+                VRChatPath = DEFAULT_VRCHAT_PATH
+            };
+
+            Save(config);
+        }
+
         public bool Exists()
         {
             return _fileWrapper.Exists(CONFIG_FILE_PATH);
@@ -79,15 +94,6 @@ namespace VRCLauncher.Services
             catch (UnauthorizedAccessException)
             {
             }
-        }
-
-        private void Initialize()
-        {
-            var config = new Config
-            {
-                VRChatPath = DEFAULT_VRCHAT_PATH
-            };
-            Save(config);
         }
     }
 }

@@ -8,6 +8,33 @@ namespace VRCLauncher.Test.Services
 {
     public class ConfigServiceTest
     {
+        [Theory]
+        [InlineData(false)]
+        [InlineData(true)]
+        public void Exists(bool exists)
+        {
+            var mockFileWrapper = new Mock<IFileWrapper>();
+            mockFileWrapper.Setup(fw => fw.Exists(It.IsAny<string>()))
+                .Returns(exists)
+                .Verifiable();
+            if (exists)
+            {
+                mockFileWrapper.Setup(fw => fw.WriteAllText(It.IsAny<string>(), It.IsAny<string?>()))
+                    .Throws<XunitException>();
+            }
+            else
+            {
+                mockFileWrapper.Setup(fw => fw.WriteAllText(TestConstantValue.CONFIG_FILE_PATH, TestConstantValue.DEFAULT_CONFIG_JSON))
+                    .Verifiable();
+            }
+
+            var configService = new ConfigService(mockFileWrapper.Object);
+            configService.Initialize();
+
+            mockFileWrapper.Verify();
+        }
+
+
         [Fact]
         public void LoadTest_NotExistsConfigFile()
         {
