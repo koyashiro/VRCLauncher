@@ -7,9 +7,14 @@ namespace VRCLauncher.Test
 {
     public static class TestConstantValue
     {
+        public static readonly string LOCAL_APPLICATION_DATA = @"C:\Users\VRCLauncher\AppData\Local";
+
         public static readonly string VRCHAT_BIN_NAME = "VRChat.exe";
-        public static readonly string CONFIG_FILE_NAME = "VRCLauncher.json";
-        public static readonly string CONFIG_FILE_PATH = $"{Path.Join(AppDomain.CurrentDomain.BaseDirectory, CONFIG_FILE_NAME)}";
+        public static readonly string CONFIG_DIRECTORY_BASE_NAME = "VRCLauncher";
+        public static readonly string CONFIG_FILE_NAME = "config.json";
+
+        public static readonly string CONFIG_DIRECTORY_PATH = Path.Join(LOCAL_APPLICATION_DATA, CONFIG_DIRECTORY_BASE_NAME);
+        public static readonly string CONFIG_FILE_PATH = Path.Join(CONFIG_DIRECTORY_PATH, CONFIG_FILE_NAME);
 
         public static readonly string DEFAULT_VRCHAT_PATH = $@"C:\Program Files (x86)\Steam\steamapps\common\VRChat\{VRCHAT_BIN_NAME}";
         public static readonly Config DEFAULT_CONFIG = new() { VRChatPath = DEFAULT_VRCHAT_PATH };

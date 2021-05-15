@@ -8,20 +8,25 @@ namespace VRCLauncher.Services
 {
     public class ConfigService : IConfigService
     {
+        private const string CONFIG_DIRECTORY_BASE_NAME = "VRCLauncher";
+        private const string CONFIG_FILE_NAME = "config.json";
+
         private const string DEFAULT_VRCHAT_PATH = @"C:\Program Files (x86)\Steam\steamapps\common\VRChat\VRChat.exe";
-        private static readonly string CONFIG_FILE_PATH = $"{Path.Join(AppDomain.CurrentDomain.BaseDirectory, "VRCLauncher.json")}";
 
+        private readonly IDirectoryWrapper _directoryWrapper;
         private readonly IFileWrapper _fileWrapper;
+        private readonly IEnvironmentWrapper _environmentWrapper;
 
-        public ConfigService(IFileWrapper fileWrapper)
+        public ConfigService(IDirectoryWrapper directoryWrapper, IFileWrapper fileWrapper, IEnvironmentWrapper environmentWrapper)
         {
+            _directoryWrapper = directoryWrapper;
             _fileWrapper = fileWrapper;
-            Initialize();
+            _environmentWrapper = environmentWrapper;
         }
 
         public void Initialize()
         {
-            if (Exists())
+            if (ExistsConfigFile())
             {
                 return;
             }
@@ -34,19 +39,34 @@ namespace VRCLauncher.Services
             Save(config);
         }
 
-        public bool Exists()
+        public string GetConfigDirectoryPath()
         {
-            return _fileWrapper.Exists(CONFIG_FILE_PATH);
+            return Path.Join(_environmentWrapper.GetLocalApplicationDataDirectoryPath(), CONFIG_DIRECTORY_BASE_NAME);
+        }
+
+        public string GetConfigFilePath()
+        {
+            return Path.Join(GetConfigDirectoryPath(), CONFIG_FILE_NAME);
+        }
+
+        public bool ExistsConfigFile()
+        {
+            return _fileWrapper.Exists(GetConfigFilePath());
+        }
+
+        public bool ExistsConfigDirectory()
+        {
+            return _directoryWrapper.Exists(GetConfigDirectoryPath());
         }
 
         public Config Load()
         {
-            if (!Exists())
+            if (!ExistsConfigFile())
             {
                 Initialize();
             }
 
-            var configJson = _fileWrapper.ReadAllText(CONFIG_FILE_PATH);
+            var configJson = _fileWrapper.ReadAllText(GetConfigFilePath());
             try
             {
                 var config = JsonSerializer.Deserialize<Config>(configJson);
@@ -76,25 +96,19 @@ namespace VRCLauncher.Services
 
         public void Save(Config config)
         {
-            try
+            if (!ExistsConfigDirectory())
             {
-                var option = new JsonSerializerOptions
-                {
-                    WriteIndented = true,
+                _directoryWrapper.CreateDirectory(GetConfigDirectoryPath());
+            }
 
-                };
-                var configJson = JsonSerializer.Serialize(config, option);
-                _fileWrapper.WriteAllText(CONFIG_FILE_PATH, configJson);
-            }
-            catch (PathTooLongException)
+            var option = new JsonSerializerOptions
             {
-            }
-            catch (IOException)
-            {
-            }
-            catch (UnauthorizedAccessException)
-            {
-            }
+                WriteIndented = true,
+
+            };
+            var configJson = JsonSerializer.Serialize(config, option);
+
+            _fileWrapper.WriteAllText(GetConfigFilePath(), configJson);
         }
     }
 }

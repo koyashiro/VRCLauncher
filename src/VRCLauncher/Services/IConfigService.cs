@@ -5,7 +5,10 @@ namespace VRCLauncher.Services
     public interface IConfigService
     {
         void Initialize();
-        bool Exists();
+        string GetConfigDirectoryPath();
+        string GetConfigFilePath();
+        bool ExistsConfigDirectory();
+        bool ExistsConfigFile();
         Config Load();
         void Save(Config config);
     }
