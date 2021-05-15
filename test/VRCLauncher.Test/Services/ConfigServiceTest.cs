@@ -1,7 +1,5 @@
 using Moq;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using VRCLauncher.Services;
 using VRCLauncher.Wrappers;
 using Xunit;
