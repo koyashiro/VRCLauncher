@@ -18,14 +18,14 @@ namespace VRCLauncher.Services
             _fileWrapper = fileWrapper;
         }
 
-        public bool ExistConfigFile()
+        public bool Exists()
         {
             return _fileWrapper.Exists(CONFIG_FILE_PATH);
         }
 
         public Config Load()
         {
-            if (!ExistConfigFile())
+            if (!Exists())
             {
                 Initialize();
             }
