@@ -20,6 +20,7 @@ namespace VRCLauncher
         {
             containerRegistry.RegisterScoped<IDirectoryWrapper, DirectoryWrapper>();
             containerRegistry.RegisterScoped<IFileWrapper, FileWrapper>();
+            containerRegistry.RegisterScoped<IEnvironmentWrapper, EnvironmentWrapper>();
             containerRegistry.RegisterScoped<IProcessWrapper, ProcessWrapper>();
             containerRegistry.RegisterScoped<IConfigService, ConfigService>();
             containerRegistry.RegisterScoped<ILaunchService, LaunchService>();
