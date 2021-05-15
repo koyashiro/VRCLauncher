@@ -17,6 +17,9 @@ namespace VRCLauncher.Test.Services
                 .Verifiable();
             mockFileWrapper.Setup(fw => fw.WriteAllText(TestConstantValue.CONFIG_FILE_PATH, TestConstantValue.DEFAULT_CONFIG_JSON))
                 .Verifiable();
+            mockFileWrapper.Setup(fw => fw.ReadAllText(TestConstantValue.CONFIG_FILE_PATH))
+                .Returns(TestConstantValue.DEFAULT_CONFIG_JSON)
+                .Verifiable();
 
             var configService = new ConfigService(mockFileWrapper.Object);
             var config = configService.Load();

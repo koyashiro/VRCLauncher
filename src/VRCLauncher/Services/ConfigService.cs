@@ -27,7 +27,7 @@ namespace VRCLauncher.Services
         {
             if (!ExistConfigFile())
             {
-                return Initialize();
+                Initialize();
             }
 
             var configJson = _fileWrapper.ReadAllText(CONFIG_FILE_PATH);
@@ -81,14 +81,13 @@ namespace VRCLauncher.Services
             }
         }
 
-        private Config Initialize()
+        private void Initialize()
         {
             var config = new Config
             {
                 VRChatPath = DEFAULT_VRCHAT_PATH
             };
             Save(config);
-            return config;
         }
     }
 }
