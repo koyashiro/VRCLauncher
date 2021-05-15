@@ -1,4 +1,5 @@
 using Moq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using VRCLauncher.Models;
 using VRCLauncher.Services;
@@ -16,146 +17,68 @@ namespace VRCLauncher.Test.ViewModels
         private const string INSTANCE_OWNER_ID = "usr_00000000-0000-0000-0000-000000000000";
         private const string NONCE = "0000000000000000000000000000000000000000000000000000000000000000";
 
-        [Fact]
-        public void UriToLaunchParameterTest_Public()
+        private static readonly string URI_PUBLIC = $"vrchat://launch/?ref=vrchat.com&id={WORLD_ID}:{INSTANCE_ID}";
+        private static readonly string URI_FRIEND_PLUS = $"{URI_PUBLIC}~hidden({INSTANCE_OWNER_ID})~nonce({NONCE})";
+        private static readonly string URI_FRIEND_ONLY = $"{URI_PUBLIC}~friends({INSTANCE_OWNER_ID})~nonce({NONCE})";
+        private static readonly string URI_INVITE_PLUS = $"{URI_PUBLIC}~private({INSTANCE_OWNER_ID})~canRequestInvite~nonce({NONCE})";
+        private static readonly string URI_INVITE_ONLY = $"{URI_PUBLIC}~private({INSTANCE_OWNER_ID})~nonce({NONCE})";
+
+        public static IEnumerable<object?[]> UriChanged_MemberData()
         {
-            var uri = $"vrchat://launch/?ref=vrchat.com&id={WORLD_ID}:{INSTANCE_ID}"; ;
+            // when invalid uri
+            yield return new object?[] { "invaliduri", string.Empty, string.Empty, InstanceType.Public, null, null, false };
 
-            var mockLauncher = new Mock<ILaunchService>();
-            var mockWindowWrapper = new Mock<IWindowWrapper>();
+            // when Public
+            yield return new object?[] { URI_PUBLIC, WORLD_ID, INSTANCE_ID, InstanceType.Public, null, null, true };
 
-            var mainWindowViewModel = new MainWindowViewModel(mockLauncher.Object, mockWindowWrapper.Object);
+            // when Friend Plus
+            yield return new object?[] { URI_FRIEND_PLUS, WORLD_ID, INSTANCE_ID, InstanceType.FriendPlus, INSTANCE_OWNER_ID, NONCE, true };
 
-            mainWindowViewModel.Uri.Value = uri;
-            Assert.Equal(WORLD_ID, mainWindowViewModel.WorldId.Value);
-            Assert.Equal(INSTANCE_ID, mainWindowViewModel.InstanceId.Value);
-            Assert.Equal(InstanceType.Public, mainWindowViewModel.InstanceType.Value);
-            Assert.Null(mainWindowViewModel.InstanceOwnerId.Value);
-            Assert.Null(mainWindowViewModel.Nonce.Value);
+            // when Friend Only
+            yield return new object?[] { URI_FRIEND_ONLY, WORLD_ID, INSTANCE_ID, InstanceType.FriendOnly, INSTANCE_OWNER_ID, NONCE, true };
+
+            // when Invite Plus
+            yield return new object?[] { URI_INVITE_PLUS, WORLD_ID, INSTANCE_ID, InstanceType.InvitePlus, INSTANCE_OWNER_ID, NONCE, true };
+
+            // when Invite Only
+            yield return new object?[] { URI_INVITE_ONLY, WORLD_ID, INSTANCE_ID, InstanceType.InviteOnly, INSTANCE_OWNER_ID, NONCE, true };
         }
 
-        [Fact]
-        public void UriToLaunchParameterTest_FriendPlus()
+        [Theory]
+        [MemberData(nameof(UriChanged_MemberData))]
+        public void UriChanged(string uri, string worldId, string instanceId, InstanceType instanceType, string? instanceOwnerId, string? nonce, bool canExecute)
         {
-            var instanceType = InstanceType.FriendPlus;
-            var uri = $"vrchat://launch/?ref=vrchat.com&id={WORLD_ID}:{INSTANCE_ID}~hidden({INSTANCE_OWNER_ID})~nonce({NONCE})";
-
             var mockLauncher = new Mock<ILaunchService>();
             var mockWindowWrapper = new Mock<IWindowWrapper>();
 
             var mainWindowViewModel = new MainWindowViewModel(mockLauncher.Object, mockWindowWrapper.Object);
-
-            mainWindowViewModel.Uri.Value = uri;
-            Assert.Equal(WORLD_ID, mainWindowViewModel.WorldId.Value);
-            Assert.Equal(INSTANCE_ID, mainWindowViewModel.InstanceId.Value);
-            Assert.Equal(instanceType, mainWindowViewModel.InstanceType.Value);
-            Assert.Equal(INSTANCE_OWNER_ID, mainWindowViewModel.InstanceOwnerId.Value);
-            Assert.Equal(NONCE, mainWindowViewModel.Nonce.Value);
-        }
-
-        [Fact]
-        public void UriToLaunchParameterTest_FriendOnly()
-        {
-            var instanceType = InstanceType.FriendOnly;
-            var uri = $"vrchat://launch/?ref=vrchat.com&id={WORLD_ID}:{INSTANCE_ID}~friends({INSTANCE_OWNER_ID})~nonce({NONCE})";
-
-            var mockLauncher = new Mock<ILaunchService>();
-            var mockWindowWrapper = new Mock<IWindowWrapper>();
-
-            var mainWindowViewModel = new MainWindowViewModel(mockLauncher.Object, mockWindowWrapper.Object);
-
-            mainWindowViewModel.Uri.Value = uri;
-            Assert.Equal(WORLD_ID, mainWindowViewModel.WorldId.Value);
-            Assert.Equal(INSTANCE_ID, mainWindowViewModel.InstanceId.Value);
-            Assert.Equal(instanceType, mainWindowViewModel.InstanceType.Value);
-            Assert.Equal(INSTANCE_OWNER_ID, mainWindowViewModel.InstanceOwnerId.Value);
-            Assert.Equal(NONCE, mainWindowViewModel.Nonce.Value);
-        }
-
-        [Fact]
-        public void UriToLaunchParameterTest_InvitePlus()
-        {
-            var instanceType = InstanceType.InvitePlus;
-            var uri = $"vrchat://launch/?ref=vrchat.com&id={WORLD_ID}:{INSTANCE_ID}~private({INSTANCE_OWNER_ID})~nonce({NONCE})~canRequestInvite";
-            var mockLauncher = new Mock<ILaunchService>();
-            var mockWindowWrapper = new Mock<IWindowWrapper>();
-
-            var mainWindowViewModel = new MainWindowViewModel(mockLauncher.Object, mockWindowWrapper.Object);
-
-            mainWindowViewModel.Uri.Value = uri;
-            Assert.Equal(WORLD_ID, mainWindowViewModel.WorldId.Value);
-            Assert.Equal(INSTANCE_ID, mainWindowViewModel.InstanceId.Value);
-            Assert.Equal(instanceType, mainWindowViewModel.InstanceType.Value);
-            Assert.Equal(INSTANCE_OWNER_ID, mainWindowViewModel.InstanceOwnerId.Value);
-            Assert.Equal(NONCE, mainWindowViewModel.Nonce.Value);
-        }
-
-        [Fact]
-        public void UriToLaunchParameterTest_InviteOnly()
-        {
-            var instanceType = InstanceType.InviteOnly;
-            var uri = $"vrchat://launch/?ref=vrchat.com&id={WORLD_ID}:{INSTANCE_ID}~private({INSTANCE_OWNER_ID})~nonce({NONCE})";
-
-            var mockLauncher = new Mock<ILaunchService>();
-            var mockWindowWrapper = new Mock<IWindowWrapper>();
-
-            var mainWindowViewModel = new MainWindowViewModel(mockLauncher.Object, mockWindowWrapper.Object);
-
-            mainWindowViewModel.Uri.Value = uri;
-            Assert.Equal(WORLD_ID, mainWindowViewModel.WorldId.Value);
-            Assert.Equal(INSTANCE_ID, mainWindowViewModel.InstanceId.Value);
-            Assert.Equal(instanceType, mainWindowViewModel.InstanceType.Value);
-            Assert.Equal(INSTANCE_OWNER_ID, mainWindowViewModel.InstanceOwnerId.Value);
-            Assert.Equal(NONCE, mainWindowViewModel.Nonce.Value);
-        }
-
-        [Fact]
-        public void LaunchVRCommandTest()
-        {
-            var uri = $"vrchat://launch/?ref=vrchat.com&id={WORLD_ID}:{INSTANCE_ID}";
-
-            var mockLauncher = new Mock<ILaunchService>();
-            mockLauncher.Setup(l => l.LaunchVR(uri)).Verifiable();
-            mockLauncher.Setup(l => l.LaunchDesktop(It.IsAny<string>())).Throws<XunitException>();
-
-            var mockWindowWrapper = new Mock<IWindowWrapper>();
-            mockWindowWrapper.Setup(wr => wr.Close()).Verifiable();
-
-            var mainWindowViewModel = new MainWindowViewModel(mockLauncher.Object, mockWindowWrapper.Object);
-            Assert.False(mainWindowViewModel.LaunchVRCommand.CanExecute());
-            Assert.False(mainWindowViewModel.LaunchDesktopCommand.CanExecute());
 
             mainWindowViewModel.Uri.Value = uri;
             Task.Delay(10).Wait();
-            Assert.True(mainWindowViewModel.LaunchVRCommand.CanExecute());
-            Assert.True(mainWindowViewModel.LaunchDesktopCommand.CanExecute());
 
+            // check LaunchParameter
+            Assert.Equal(worldId, mainWindowViewModel.WorldId.Value);
+            Assert.Equal(instanceId, mainWindowViewModel.InstanceId.Value);
+            Assert.Equal(instanceType, mainWindowViewModel.InstanceType.Value);
+            Assert.Equal(instanceOwnerId, mainWindowViewModel.InstanceOwnerId.Value);
+            Assert.Equal(nonce, mainWindowViewModel.Nonce.Value);
+
+            // check Launch commands
+            Assert.Equal(canExecute, mainWindowViewModel.LaunchVRCommand.CanExecute());
+            Assert.Equal(canExecute, mainWindowViewModel.LaunchDesktopCommand.CanExecute());
+
+            // execute LaunchVR command
+            mockLauncher.Setup(l => l.LaunchVR(uri)).Verifiable();
+            mockLauncher.Setup(l => l.LaunchDesktop(It.IsAny<string>())).Throws<XunitException>();
+            mockWindowWrapper.Setup(wr => wr.Close()).Verifiable();
             mainWindowViewModel.LaunchVRCommand.Execute();
             mockLauncher.Verify();
             mockWindowWrapper.Verify();
-        }
 
-        [Fact]
-        public void LaunchDesktopCommandTest()
-        {
-            var uri = $"vrchat://launch/?ref=vrchat.com&id={WORLD_ID}:{INSTANCE_ID}";
-
-            var mockLauncher = new Mock<ILaunchService>();
+            // execute LaunchDesktop Command
             mockLauncher.Setup(l => l.LaunchVR(It.IsAny<string>())).Throws<XunitException>();
             mockLauncher.Setup(l => l.LaunchDesktop(uri)).Verifiable();
-
-            var mockWindowWrapper = new Mock<IWindowWrapper>();
             mockWindowWrapper.Setup(wr => wr.Close()).Verifiable();
-
-            var mainWindowViewModel = new MainWindowViewModel(mockLauncher.Object, mockWindowWrapper.Object);
-            Assert.False(mainWindowViewModel.LaunchVRCommand.CanExecute());
-            Assert.False(mainWindowViewModel.LaunchDesktopCommand.CanExecute());
-
-            mainWindowViewModel.Uri.Value = uri;
-            Task.Delay(10).Wait();
-            Assert.True(mainWindowViewModel.LaunchVRCommand.CanExecute());
-            Assert.True(mainWindowViewModel.LaunchDesktopCommand.CanExecute());
-
             mainWindowViewModel.LaunchDesktopCommand.Execute();
             mockLauncher.Verify();
             mockWindowWrapper.Verify();
