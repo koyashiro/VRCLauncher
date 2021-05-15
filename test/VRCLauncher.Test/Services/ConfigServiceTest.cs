@@ -54,6 +54,26 @@ namespace VRCLauncher.Test.Services
             mockFileWrapper.Verify();
         }
 
+        [Fact]
+        public void GetConfigDirectoryPath()
+        {
+            var mockEnvironmentWrapper = CreateMockEnvironmentWrapper();
+            var mockDirectoryWrapper = new Mock<IDirectoryWrapper>();
+            var mockFileWrapper = new Mock<IFileWrapper>();
+            var configService = new ConfigService(mockDirectoryWrapper.Object, mockFileWrapper.Object, mockEnvironmentWrapper.Object);
+            Assert.Equal(TestConstantValue.CONFIG_DIRECTORY_PATH, configService.GetConfigDirectoryPath());
+        }
+
+        [Fact]
+        public void GetConfigFilePath()
+        {
+            var mockEnvironmentWrapper = CreateMockEnvironmentWrapper();
+            var mockDirectoryWrapper = new Mock<IDirectoryWrapper>();
+            var mockFileWrapper = new Mock<IFileWrapper>();
+            var configService = new ConfigService(mockDirectoryWrapper.Object, mockFileWrapper.Object, mockEnvironmentWrapper.Object);
+            Assert.Equal(TestConstantValue.CONFIG_FILE_PATH, configService.GetConfigFilePath());
+        }
+
         [Theory]
         [InlineData(false)]
         [InlineData(true)]
