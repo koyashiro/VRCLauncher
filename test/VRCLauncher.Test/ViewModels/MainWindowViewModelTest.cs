@@ -12,6 +12,8 @@ namespace VRCLauncher.Test.ViewModels
     {
         private const string WORLD_ID = "wrld_00000000-0000-0000-0000-000000000000";
         private const string INSTANCE_ID = "00000";
+        private const string INSTANCE_OWNER_ID = "usr_00000000-0000-0000-0000-000000000000";
+        private const string NONCE = "0000000000000000000000000000000000000000000000000000000000000000";
 
         [Fact]
         public void UriToLaunchParameterTest_Public()
@@ -35,9 +37,7 @@ namespace VRCLauncher.Test.ViewModels
         public void UriToLaunchParameterTest_FriendPlus()
         {
             var instanceType = InstanceType.FriendPlus;
-            var instanceOwnerId = "usr_00000000-0000-0000-0000-000000000000";
-            var nonce = "0000000000000000000000000000000000000000000000000000000000000000";
-            var uri = $"vrchat://launch/?ref=vrchat.com&id={WORLD_ID}:{INSTANCE_ID}~hidden({instanceOwnerId})~nonce({nonce})";
+            var uri = $"vrchat://launch/?ref=vrchat.com&id={WORLD_ID}:{INSTANCE_ID}~hidden({INSTANCE_OWNER_ID})~nonce({NONCE})";
 
             var mockLauncher = new Mock<ILaunchService>();
             var mockWindowWrapper = new Mock<IWindowWrapper>();
@@ -48,17 +48,15 @@ namespace VRCLauncher.Test.ViewModels
             Assert.Equal(WORLD_ID, mainWindowViewModel.WorldId.Value);
             Assert.Equal(INSTANCE_ID, mainWindowViewModel.InstanceId.Value);
             Assert.Equal(instanceType, mainWindowViewModel.InstanceType.Value);
-            Assert.Equal(instanceOwnerId, mainWindowViewModel.InstanceOwnerId.Value);
-            Assert.Equal(nonce, mainWindowViewModel.Nonce.Value);
+            Assert.Equal(INSTANCE_OWNER_ID, mainWindowViewModel.InstanceOwnerId.Value);
+            Assert.Equal(NONCE, mainWindowViewModel.Nonce.Value);
         }
 
         [Fact]
         public void UriToLaunchParameterTest_FriendOnly()
         {
             var instanceType = InstanceType.FriendOnly;
-            var instanceOwnerId = "usr_00000000-0000-0000-0000-000000000000";
-            var nonce = "0000000000000000000000000000000000000000000000000000000000000000";
-            var uri = $"vrchat://launch/?ref=vrchat.com&id={WORLD_ID}:{INSTANCE_ID}~friends({instanceOwnerId})~nonce({nonce})";
+            var uri = $"vrchat://launch/?ref=vrchat.com&id={WORLD_ID}:{INSTANCE_ID}~friends({INSTANCE_OWNER_ID})~nonce({NONCE})";
 
             var mockLauncher = new Mock<ILaunchService>();
             var mockWindowWrapper = new Mock<IWindowWrapper>();
@@ -69,17 +67,15 @@ namespace VRCLauncher.Test.ViewModels
             Assert.Equal(WORLD_ID, mainWindowViewModel.WorldId.Value);
             Assert.Equal(INSTANCE_ID, mainWindowViewModel.InstanceId.Value);
             Assert.Equal(instanceType, mainWindowViewModel.InstanceType.Value);
-            Assert.Equal(instanceOwnerId, mainWindowViewModel.InstanceOwnerId.Value);
-            Assert.Equal(nonce, mainWindowViewModel.Nonce.Value);
+            Assert.Equal(INSTANCE_OWNER_ID, mainWindowViewModel.InstanceOwnerId.Value);
+            Assert.Equal(NONCE, mainWindowViewModel.Nonce.Value);
         }
 
         [Fact]
         public void UriToLaunchParameterTest_InvitePlus()
         {
             var instanceType = InstanceType.InvitePlus;
-            var instanceOwnerId = "usr_00000000-0000-0000-0000-000000000000";
-            var nonce = "0000000000000000000000000000000000000000000000000000000000000000";
-            var uri = $"vrchat://launch/?ref=vrchat.com&id={WORLD_ID}:{INSTANCE_ID}~private({instanceOwnerId})~nonce({nonce})~canRequestInvite";
+            var uri = $"vrchat://launch/?ref=vrchat.com&id={WORLD_ID}:{INSTANCE_ID}~private({INSTANCE_OWNER_ID})~nonce({NONCE})~canRequestInvite";
             var mockLauncher = new Mock<ILaunchService>();
             var mockWindowWrapper = new Mock<IWindowWrapper>();
 
@@ -89,17 +85,15 @@ namespace VRCLauncher.Test.ViewModels
             Assert.Equal(WORLD_ID, mainWindowViewModel.WorldId.Value);
             Assert.Equal(INSTANCE_ID, mainWindowViewModel.InstanceId.Value);
             Assert.Equal(instanceType, mainWindowViewModel.InstanceType.Value);
-            Assert.Equal(instanceOwnerId, mainWindowViewModel.InstanceOwnerId.Value);
-            Assert.Equal(nonce, mainWindowViewModel.Nonce.Value);
+            Assert.Equal(INSTANCE_OWNER_ID, mainWindowViewModel.InstanceOwnerId.Value);
+            Assert.Equal(NONCE, mainWindowViewModel.Nonce.Value);
         }
 
         [Fact]
         public void UriToLaunchParameterTest_InviteOnly()
         {
             var instanceType = InstanceType.InviteOnly;
-            var instanceOwnerId = "usr_00000000-0000-0000-0000-000000000000";
-            var nonce = "0000000000000000000000000000000000000000000000000000000000000000";
-            var uri = $"vrchat://launch/?ref=vrchat.com&id={WORLD_ID}:{INSTANCE_ID}~private({instanceOwnerId})~nonce({nonce})";
+            var uri = $"vrchat://launch/?ref=vrchat.com&id={WORLD_ID}:{INSTANCE_ID}~private({INSTANCE_OWNER_ID})~nonce({NONCE})";
 
             var mockLauncher = new Mock<ILaunchService>();
             var mockWindowWrapper = new Mock<IWindowWrapper>();
@@ -110,8 +104,8 @@ namespace VRCLauncher.Test.ViewModels
             Assert.Equal(WORLD_ID, mainWindowViewModel.WorldId.Value);
             Assert.Equal(INSTANCE_ID, mainWindowViewModel.InstanceId.Value);
             Assert.Equal(instanceType, mainWindowViewModel.InstanceType.Value);
-            Assert.Equal(instanceOwnerId, mainWindowViewModel.InstanceOwnerId.Value);
-            Assert.Equal(nonce, mainWindowViewModel.Nonce.Value);
+            Assert.Equal(INSTANCE_OWNER_ID, mainWindowViewModel.InstanceOwnerId.Value);
+            Assert.Equal(NONCE, mainWindowViewModel.Nonce.Value);
         }
 
         [Fact]
