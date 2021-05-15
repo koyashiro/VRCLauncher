@@ -16,6 +16,7 @@ namespace VRCLauncher.Services
         public ConfigService(IFileWrapper fileWrapper)
         {
             _fileWrapper = fileWrapper;
+            Initialize();
         }
 
         public void Initialize()
