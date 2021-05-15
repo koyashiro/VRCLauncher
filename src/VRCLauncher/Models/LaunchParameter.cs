@@ -22,11 +22,14 @@ namespace VRCLauncher.Models
         {
             if (InstanceType == InstanceType.Public)
             {
-                return IsValidWorldId(WorldId) && IsValidInstanceType(InstanceType);
+                return IsValidWorldId(WorldId)
+                    && IsValidInstanceType(InstanceType)
+                    && IsValidInstanceId(InstanceId);
             }
             else
             {
                 return IsValidWorldId(WorldId)
+                    && IsValidInstanceId(InstanceId)
                     && IsValidInstanceType(InstanceType)
                     && IsValidUserId(InstanceOwnerId)
                     && IsValidNonce(Nonce);
@@ -36,6 +39,11 @@ namespace VRCLauncher.Models
         private static bool IsValidWorldId(string worldId)
         {
             return Regex.IsMatch(worldId, $"^{REGEX_WORLD_ID}$");
+        }
+
+        private static bool IsValidInstanceId(string instanceId)
+        {
+            return instanceId.Length is not 0;
         }
 
         private static bool IsValidInstanceType(InstanceType instanceType)
