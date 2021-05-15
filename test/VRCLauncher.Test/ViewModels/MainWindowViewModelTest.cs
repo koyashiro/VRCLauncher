@@ -25,8 +25,8 @@ namespace VRCLauncher.Test.ViewModels
             var mockWindowWrapper = new Mock<IWindowWrapper>();
 
             var mainWindowViewModel = new MainWindowViewModel(mockLauncher.Object, mockWindowWrapper.Object);
-            mainWindowViewModel.Uri.Value = uri;
 
+            mainWindowViewModel.Uri.Value = uri;
             Assert.Equal(WORLD_ID, mainWindowViewModel.WorldId.Value);
             Assert.Equal(INSTANCE_ID, mainWindowViewModel.InstanceId.Value);
             Assert.Equal(InstanceType.Public, mainWindowViewModel.InstanceType.Value);
@@ -44,8 +44,8 @@ namespace VRCLauncher.Test.ViewModels
             var mockWindowWrapper = new Mock<IWindowWrapper>();
 
             var mainWindowViewModel = new MainWindowViewModel(mockLauncher.Object, mockWindowWrapper.Object);
-            mainWindowViewModel.Uri.Value = uri;
 
+            mainWindowViewModel.Uri.Value = uri;
             Assert.Equal(WORLD_ID, mainWindowViewModel.WorldId.Value);
             Assert.Equal(INSTANCE_ID, mainWindowViewModel.InstanceId.Value);
             Assert.Equal(instanceType, mainWindowViewModel.InstanceType.Value);
@@ -63,8 +63,8 @@ namespace VRCLauncher.Test.ViewModels
             var mockWindowWrapper = new Mock<IWindowWrapper>();
 
             var mainWindowViewModel = new MainWindowViewModel(mockLauncher.Object, mockWindowWrapper.Object);
-            mainWindowViewModel.Uri.Value = uri;
 
+            mainWindowViewModel.Uri.Value = uri;
             Assert.Equal(WORLD_ID, mainWindowViewModel.WorldId.Value);
             Assert.Equal(INSTANCE_ID, mainWindowViewModel.InstanceId.Value);
             Assert.Equal(instanceType, mainWindowViewModel.InstanceType.Value);
@@ -81,8 +81,8 @@ namespace VRCLauncher.Test.ViewModels
             var mockWindowWrapper = new Mock<IWindowWrapper>();
 
             var mainWindowViewModel = new MainWindowViewModel(mockLauncher.Object, mockWindowWrapper.Object);
-            mainWindowViewModel.Uri.Value = uri;
 
+            mainWindowViewModel.Uri.Value = uri;
             Assert.Equal(WORLD_ID, mainWindowViewModel.WorldId.Value);
             Assert.Equal(INSTANCE_ID, mainWindowViewModel.InstanceId.Value);
             Assert.Equal(instanceType, mainWindowViewModel.InstanceType.Value);
@@ -100,8 +100,8 @@ namespace VRCLauncher.Test.ViewModels
             var mockWindowWrapper = new Mock<IWindowWrapper>();
 
             var mainWindowViewModel = new MainWindowViewModel(mockLauncher.Object, mockWindowWrapper.Object);
-            mainWindowViewModel.Uri.Value = uri;
 
+            mainWindowViewModel.Uri.Value = uri;
             Assert.Equal(WORLD_ID, mainWindowViewModel.WorldId.Value);
             Assert.Equal(INSTANCE_ID, mainWindowViewModel.InstanceId.Value);
             Assert.Equal(instanceType, mainWindowViewModel.InstanceType.Value);
@@ -122,7 +122,6 @@ namespace VRCLauncher.Test.ViewModels
             mockWindowWrapper.Setup(wr => wr.Close()).Verifiable();
 
             var mainWindowViewModel = new MainWindowViewModel(mockLauncher.Object, mockWindowWrapper.Object);
-
             Assert.False(mainWindowViewModel.LaunchVRCommand.CanExecute());
             Assert.False(mainWindowViewModel.LaunchDesktopCommand.CanExecute());
 
