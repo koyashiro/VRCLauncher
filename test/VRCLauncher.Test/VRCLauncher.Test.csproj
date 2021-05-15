@@ -24,8 +24,4 @@
     <ProjectReference Include="..\..\src\VRCLauncher\VRCLauncher.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
-
 </Project>
