@@ -14,12 +14,12 @@ namespace VRCLauncher.ViewModels
     public class MainWindowViewModel : BindableBase, IMainWindowViewModel
     {
         private bool _disposedValue;
-        private readonly ILaunchService _launcher;
+        private readonly ILaunchService _launchService;
         private readonly IWindowWrapper _windowWrapper;
 
-        public MainWindowViewModel(ILaunchService launcher, IWindowWrapper windowWrapper)
+        public MainWindowViewModel(ILaunchService launchService, IWindowWrapper windowWrapper)
         {
-            _launcher = launcher;
+            _launchService = launchService;
             _windowWrapper = windowWrapper;
 
             var args = Environment.GetCommandLineArgs();
@@ -61,10 +61,10 @@ namespace VRCLauncher.ViewModels
             }
 
             LaunchVRCommand = new ReactiveCommand(canLaunchCommand, false).AddTo(Disposable);
-            LaunchVRCommand.Subscribe(parameter => launchCommandAction(parameter, _launcher.LaunchVR));
+            LaunchVRCommand.Subscribe(parameter => launchCommandAction(parameter, _launchService.LaunchVR));
 
             LaunchDesktopCommand = new ReactiveCommand(canLaunchCommand, false).AddTo(Disposable);
-            LaunchDesktopCommand.Subscribe(parameter => launchCommandAction(parameter, _launcher.LaunchDesktop));
+            LaunchDesktopCommand.Subscribe(parameter => launchCommandAction(parameter, _launchService.LaunchDesktop));
         }
 
         private CompositeDisposable Disposable { get; } = new CompositeDisposable();

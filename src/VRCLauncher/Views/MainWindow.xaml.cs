@@ -10,10 +10,10 @@ namespace VRCLauncher.Views
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow(ILaunchService launcher)
+        public MainWindow(ILaunchService launchService)
         {
             InitializeComponent();
-            DataContext = new MainWindowViewModel(launcher, new WindowWrapper(this));
+            DataContext = new MainWindowViewModel(launchService, new WindowWrapper(this));
         }
     }
 }
