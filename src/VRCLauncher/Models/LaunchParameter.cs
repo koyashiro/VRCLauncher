@@ -38,6 +38,11 @@ namespace VRCLauncher.Models
 
         private static bool IsValidWorldId(string worldId)
         {
+            if (worldId.Length is 0)
+            {
+                return false;
+            }
+
             return Regex.IsMatch(worldId, $"^{REGEX_WORLD_ID}$");
         }
 
@@ -53,7 +58,7 @@ namespace VRCLauncher.Models
 
         private static bool IsValidUserId(string? userId)
         {
-            if (userId is null)
+            if (string.IsNullOrEmpty(userId))
             {
                 return false;
             }
@@ -63,7 +68,7 @@ namespace VRCLauncher.Models
 
         private static bool IsValidNonce(string? nonce)
         {
-            if (nonce is null)
+            if (string.IsNullOrEmpty(nonce))
             {
                 return false;
             }
