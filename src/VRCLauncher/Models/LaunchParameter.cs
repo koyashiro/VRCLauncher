@@ -73,6 +73,11 @@ namespace VRCLauncher.Models
 
         public override string ToString()
         {
+            if (!IsValid())
+            {
+                return string.Empty;
+            }
+
             var sb = new StringBuilder();
             sb.Append($"vrchat://launch/?ref=vrchat.com&id={WorldId}:{InstanceId}");
 
@@ -90,14 +95,14 @@ namespace VRCLauncher.Models
                     break;
             }
 
-            if (InstanceType != InstanceType.Public)
-            {
-                sb.Append($"~nonce({Nonce})");
-            }
-
             if (InstanceType == InstanceType.InvitePlus)
             {
                 sb.Append("~canRequestInvite");
+            }
+
+            if (InstanceType != InstanceType.Public)
+            {
+                sb.Append($"~nonce({Nonce})");
             }
 
             return sb.ToString();
