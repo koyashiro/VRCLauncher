@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace VRCLauncher.Models
@@ -83,34 +82,17 @@ namespace VRCLauncher.Models
                 return string.Empty;
             }
 
-            var sb = new StringBuilder();
-            sb.Append($"vrchat://launch/?ref=vrchat.com&id={WorldId}:{InstanceId}");
+            var URI_PUBLIC = $"vrchat://launch/?ref=vrchat.com&id={WorldId}:{InstanceId}";
 
-            switch (InstanceType)
+            return InstanceType switch
             {
-                case InstanceType.FriendPlus:
-                    sb.Append($"~hidden({InstanceOwnerId})");
-                    break;
-                case InstanceType.FriendOnly:
-                    sb.Append($"~friends({InstanceOwnerId})");
-                    break;
-                case InstanceType.InvitePlus:
-                case InstanceType.InviteOnly:
-                    sb.Append($"~private({InstanceOwnerId})");
-                    break;
-            }
-
-            if (InstanceType == InstanceType.InvitePlus)
-            {
-                sb.Append("~canRequestInvite");
-            }
-
-            if (InstanceType != InstanceType.Public)
-            {
-                sb.Append($"~nonce({Nonce})");
-            }
-
-            return sb.ToString();
+                InstanceType.Public => URI_PUBLIC,
+                InstanceType.FriendPlus => $"{URI_PUBLIC}~hidden({InstanceOwnerId})~nonce({Nonce})",
+                InstanceType.FriendOnly => $"{URI_PUBLIC}~friends({InstanceOwnerId})~nonce({Nonce})",
+                InstanceType.InvitePlus => $"{URI_PUBLIC}~private({InstanceOwnerId})~canRequestInvite~nonce({Nonce})",
+                InstanceType.InviteOnly => $"{URI_PUBLIC}~private({InstanceOwnerId})~nonce({Nonce})",
+                _ => string.Empty,
+            };
         }
 
         public static bool TryParse(string? arg, [MaybeNullWhen(false)] out LaunchParameter launchParameter)
