@@ -7,33 +7,22 @@ namespace VRCLauncher.Test.Models
 {
     public class LaunchParameterTest
     {
-        private const string WORLD_ID = "wrld_00000000-0000-0000-0000-000000000000";
-        private const string INSTANCE_ID = "00000";
-        private const string INSTANCE_OWNER_ID = "usr_00000000-0000-0000-0000-000000000000";
-        private const string NONCE = "0000000000000000000000000000000000000000000000000000000000000000";
-
-        private static readonly string URI_PUBLIC = $"vrchat://launch/?ref=vrchat.com&id={WORLD_ID}:{INSTANCE_ID}";
-        private static readonly string URI_FRIEND_PLUS = $"{URI_PUBLIC}~hidden({INSTANCE_OWNER_ID})~nonce({NONCE})";
-        private static readonly string URI_FRIEND_ONLY = $"{URI_PUBLIC}~friends({INSTANCE_OWNER_ID})~nonce({NONCE})";
-        private static readonly string URI_INVITE_PLUS = $"{URI_PUBLIC}~private({INSTANCE_OWNER_ID})~canRequestInvite~nonce({NONCE})";
-        private static readonly string URI_INVITE_ONLY = $"{URI_PUBLIC}~private({INSTANCE_OWNER_ID})~nonce({NONCE})";
-
         public static IEnumerable<object?[]> LaunchParameterToUri_MemberData()
         {
             // when Public
-            yield return new object?[] { InstanceType.Public, URI_PUBLIC };
+            yield return new object?[] { InstanceType.Public, TestConstantValue.URI_PUBLIC };
 
             // when Friend Plus
-            yield return new object?[] { InstanceType.FriendPlus, URI_FRIEND_PLUS };
+            yield return new object?[] { InstanceType.FriendPlus, TestConstantValue.URI_FRIEND_PLUS };
 
             // when Friend Only
-            yield return new object?[] { InstanceType.FriendOnly, URI_FRIEND_ONLY };
+            yield return new object?[] { InstanceType.FriendOnly, TestConstantValue.URI_FRIEND_ONLY };
 
             // when Invite Plus
-            yield return new object?[] { InstanceType.InvitePlus, URI_INVITE_PLUS };
+            yield return new object?[] { InstanceType.InvitePlus, TestConstantValue.URI_INVITE_PLUS };
 
             // when Invite Only
-            yield return new object?[] { InstanceType.InviteOnly, URI_INVITE_ONLY };
+            yield return new object?[] { InstanceType.InviteOnly, TestConstantValue.URI_INVITE_ONLY };
         }
 
         [Theory]
@@ -49,44 +38,44 @@ namespace VRCLauncher.Test.Models
 
             // when WorldId is invalid
             launchParameter.WorldId = string.Empty;
-            launchParameter.InstanceId = INSTANCE_ID;
-            launchParameter.InstanceOwnerId = INSTANCE_OWNER_ID;
-            launchParameter.Nonce = NONCE;
+            launchParameter.InstanceId = TestConstantValue.INSTANCE_ID;
+            launchParameter.InstanceOwnerId = TestConstantValue.INSTANCE_OWNER_ID;
+            launchParameter.Nonce = TestConstantValue.NONCE;
             Assert.False(launchParameter.IsValid());
             Assert.Equal(string.Empty, launchParameter.ToString());
 
             // when InstanceId is invalid
-            launchParameter.WorldId = WORLD_ID;
+            launchParameter.WorldId = TestConstantValue.WORLD_ID;
             launchParameter.InstanceId = string.Empty;
-            launchParameter.InstanceOwnerId = INSTANCE_OWNER_ID;
-            launchParameter.Nonce = NONCE;
+            launchParameter.InstanceOwnerId = TestConstantValue.INSTANCE_OWNER_ID;
+            launchParameter.Nonce = TestConstantValue.NONCE;
             Assert.False(launchParameter.IsValid());
             Assert.Equal(string.Empty, launchParameter.ToString());
 
             if (instanceType != InstanceType.Public)
             {
                 // when InstanceOwnerId is invalid
-                launchParameter.WorldId = WORLD_ID;
-                launchParameter.InstanceId = INSTANCE_ID;
+                launchParameter.WorldId = TestConstantValue.WORLD_ID;
+                launchParameter.InstanceId = TestConstantValue.INSTANCE_ID;
                 launchParameter.InstanceOwnerId = string.Empty;
-                launchParameter.Nonce = NONCE;
+                launchParameter.Nonce = TestConstantValue.NONCE;
                 Assert.False(launchParameter.IsValid());
                 Assert.Equal(string.Empty, launchParameter.ToString());
 
                 // when Nonce is invalid
-                launchParameter.WorldId = WORLD_ID;
-                launchParameter.InstanceId = INSTANCE_ID;
-                launchParameter.InstanceOwnerId = INSTANCE_OWNER_ID;
+                launchParameter.WorldId = TestConstantValue.WORLD_ID;
+                launchParameter.InstanceId = TestConstantValue.INSTANCE_ID;
+                launchParameter.InstanceOwnerId = TestConstantValue.INSTANCE_OWNER_ID;
                 launchParameter.Nonce = string.Empty;
                 Assert.False(launchParameter.IsValid());
                 Assert.Equal(string.Empty, launchParameter.ToString());
             }
 
             // when parameters are valid
-            launchParameter.WorldId = WORLD_ID;
-            launchParameter.InstanceId = INSTANCE_ID;
-            launchParameter.InstanceOwnerId = INSTANCE_OWNER_ID;
-            launchParameter.Nonce = NONCE;
+            launchParameter.WorldId = TestConstantValue.WORLD_ID;
+            launchParameter.InstanceId = TestConstantValue.INSTANCE_ID;
+            launchParameter.InstanceOwnerId = TestConstantValue.INSTANCE_OWNER_ID;
+            launchParameter.Nonce = TestConstantValue.NONCE;
             Assert.True(launchParameter.IsValid());
             Assert.Equal(uri, launchParameter.ToString());
         }
@@ -105,46 +94,46 @@ namespace VRCLauncher.Test.Models
             // when WorldId is invalid
             yield return new object?[]
             {
-                $"vrchat://launch/?ref=vrchat.com&id=invalid-world-id:{INSTANCE_ID}",
+                $"vrchat://launch/?ref=vrchat.com&id=invalid-world-id:{TestConstantValue.INSTANCE_ID}",
                 null,
             };
 
             // when Friend Plus and Nonce does not exists
             yield return new object?[]
             {
-                $"{URI_PUBLIC}~hidden({INSTANCE_OWNER_ID})",
+                $"{TestConstantValue.URI_PUBLIC}~hidden({TestConstantValue.INSTANCE_OWNER_ID})",
                 null,
             };
 
             // when Friend Only and Nonce does not exists
             yield return new object?[]
             {
-                $"{URI_PUBLIC}~friends({INSTANCE_OWNER_ID})",
+                $"{TestConstantValue.URI_PUBLIC}~friends({TestConstantValue.INSTANCE_OWNER_ID})",
                 null,
             };
 
             // when Invite Plus and Nonce does not exists
             yield return new object?[]
             {
-                $"{URI_PUBLIC}~private({INSTANCE_OWNER_ID})",
+                $"{TestConstantValue.URI_PUBLIC}~private({TestConstantValue.INSTANCE_OWNER_ID})",
                 null,
             };
 
             // when Invite Only and Nonce does not exists
             yield return new object?[]
             {
-                $"{URI_PUBLIC}~private({INSTANCE_OWNER_ID})~canRequestInvite",
+                $"{TestConstantValue.URI_PUBLIC}~private({TestConstantValue.INSTANCE_OWNER_ID})~canRequestInvite",
                 null,
             };
 
             // when Public
             yield return new object?[]
             {
-                URI_PUBLIC,
+                TestConstantValue.URI_PUBLIC,
                 new LaunchParameter
                 {
-                    WorldId = WORLD_ID,
-                    InstanceId = INSTANCE_ID,
+                    WorldId = TestConstantValue.WORLD_ID,
+                    InstanceId = TestConstantValue.INSTANCE_ID,
                     InstanceType = InstanceType.Public,
                 },
             };
@@ -152,56 +141,56 @@ namespace VRCLauncher.Test.Models
             // when Friend Plus
             yield return new object?[]
             {
-                URI_FRIEND_PLUS,
+                TestConstantValue.URI_FRIEND_PLUS,
                 new LaunchParameter
                 {
-                    WorldId = WORLD_ID,
-                    InstanceId = INSTANCE_ID,
+                    WorldId = TestConstantValue.WORLD_ID,
+                    InstanceId = TestConstantValue.INSTANCE_ID,
                     InstanceType = InstanceType.FriendPlus,
-                    InstanceOwnerId = INSTANCE_OWNER_ID,
-                    Nonce = NONCE,
+                    InstanceOwnerId = TestConstantValue.INSTANCE_OWNER_ID,
+                    Nonce = TestConstantValue.NONCE,
                 },
             };
 
             // when Friend Only
             yield return new object?[]
             {
-                URI_FRIEND_ONLY,
+                TestConstantValue.URI_FRIEND_ONLY,
                 new LaunchParameter
                 {
-                    WorldId = WORLD_ID,
-                    InstanceId = INSTANCE_ID,
+                    WorldId = TestConstantValue.WORLD_ID,
+                    InstanceId = TestConstantValue.INSTANCE_ID,
                     InstanceType = InstanceType.FriendOnly,
-                    InstanceOwnerId = INSTANCE_OWNER_ID,
-                    Nonce = NONCE,
+                    InstanceOwnerId = TestConstantValue.INSTANCE_OWNER_ID,
+                    Nonce = TestConstantValue.NONCE,
                 },
             };
 
             // when Invite Plus
             yield return new object?[]
             {
-                URI_INVITE_PLUS,
+                TestConstantValue.URI_INVITE_PLUS,
                 new LaunchParameter
                 {
-                    WorldId = WORLD_ID,
-                    InstanceId = INSTANCE_ID,
+                    WorldId = TestConstantValue.WORLD_ID,
+                    InstanceId = TestConstantValue.INSTANCE_ID,
                     InstanceType = InstanceType.InvitePlus,
-                    InstanceOwnerId = INSTANCE_OWNER_ID,
-                    Nonce = NONCE,
+                    InstanceOwnerId = TestConstantValue.INSTANCE_OWNER_ID,
+                    Nonce = TestConstantValue.NONCE,
                 },
             };
 
             // when Invite Only
             yield return new object?[]
             {
-                URI_INVITE_ONLY,
+                TestConstantValue.URI_INVITE_ONLY,
                 new LaunchParameter
                 {
-                    WorldId = WORLD_ID,
-                    InstanceId = INSTANCE_ID,
+                    WorldId = TestConstantValue.WORLD_ID,
+                    InstanceId = TestConstantValue.INSTANCE_ID,
                     InstanceType = InstanceType.InviteOnly,
-                    InstanceOwnerId = INSTANCE_OWNER_ID,
-                    Nonce = NONCE,
+                    InstanceOwnerId = TestConstantValue.INSTANCE_OWNER_ID,
+                    Nonce = TestConstantValue.NONCE,
                 },
             };
         }

@@ -12,36 +12,25 @@ namespace VRCLauncher.Test.ViewModels
 {
     public class MainWindowViewModelTest
     {
-        private const string WORLD_ID = "wrld_00000000-0000-0000-0000-000000000000";
-        private const string INSTANCE_ID = "00000";
-        private const string INSTANCE_OWNER_ID = "usr_00000000-0000-0000-0000-000000000000";
-        private const string NONCE = "0000000000000000000000000000000000000000000000000000000000000000";
-
-        private static readonly string URI_PUBLIC = $"vrchat://launch/?ref=vrchat.com&id={WORLD_ID}:{INSTANCE_ID}";
-        private static readonly string URI_FRIEND_PLUS = $"{URI_PUBLIC}~hidden({INSTANCE_OWNER_ID})~nonce({NONCE})";
-        private static readonly string URI_FRIEND_ONLY = $"{URI_PUBLIC}~friends({INSTANCE_OWNER_ID})~nonce({NONCE})";
-        private static readonly string URI_INVITE_PLUS = $"{URI_PUBLIC}~private({INSTANCE_OWNER_ID})~canRequestInvite~nonce({NONCE})";
-        private static readonly string URI_INVITE_ONLY = $"{URI_PUBLIC}~private({INSTANCE_OWNER_ID})~nonce({NONCE})";
-
         public static IEnumerable<object?[]> UriChanged_MemberData()
         {
             // when invalid uri
             yield return new object?[] { "invaliduri", string.Empty, string.Empty, InstanceType.Public, null, null, false };
 
             // when Public
-            yield return new object?[] { URI_PUBLIC, WORLD_ID, INSTANCE_ID, InstanceType.Public, null, null, true };
+            yield return new object?[] { TestConstantValue.URI_PUBLIC, TestConstantValue.WORLD_ID, TestConstantValue.INSTANCE_ID, InstanceType.Public, null, null, true };
 
             // when Friend Plus
-            yield return new object?[] { URI_FRIEND_PLUS, WORLD_ID, INSTANCE_ID, InstanceType.FriendPlus, INSTANCE_OWNER_ID, NONCE, true };
+            yield return new object?[] { TestConstantValue.URI_FRIEND_PLUS, TestConstantValue.WORLD_ID, TestConstantValue.INSTANCE_ID, InstanceType.FriendPlus, TestConstantValue.INSTANCE_OWNER_ID, TestConstantValue.NONCE, true };
 
             // when Friend Only
-            yield return new object?[] { URI_FRIEND_ONLY, WORLD_ID, INSTANCE_ID, InstanceType.FriendOnly, INSTANCE_OWNER_ID, NONCE, true };
+            yield return new object?[] { TestConstantValue.URI_FRIEND_ONLY, TestConstantValue.WORLD_ID, TestConstantValue.INSTANCE_ID, InstanceType.FriendOnly, TestConstantValue.INSTANCE_OWNER_ID, TestConstantValue.NONCE, true };
 
             // when Invite Plus
-            yield return new object?[] { URI_INVITE_PLUS, WORLD_ID, INSTANCE_ID, InstanceType.InvitePlus, INSTANCE_OWNER_ID, NONCE, true };
+            yield return new object?[] { TestConstantValue.URI_INVITE_PLUS, TestConstantValue.WORLD_ID, TestConstantValue.INSTANCE_ID, InstanceType.InvitePlus, TestConstantValue.INSTANCE_OWNER_ID, TestConstantValue.NONCE, true };
 
             // when Invite Only
-            yield return new object?[] { URI_INVITE_ONLY, WORLD_ID, INSTANCE_ID, InstanceType.InviteOnly, INSTANCE_OWNER_ID, NONCE, true };
+            yield return new object?[] { TestConstantValue.URI_INVITE_ONLY, TestConstantValue.WORLD_ID, TestConstantValue.INSTANCE_ID, InstanceType.InviteOnly, TestConstantValue.INSTANCE_OWNER_ID, TestConstantValue.NONCE, true };
         }
 
         [Theory]
