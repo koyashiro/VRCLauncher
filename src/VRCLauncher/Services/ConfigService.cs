@@ -49,14 +49,14 @@ namespace VRCLauncher.Services
             return Path.Join(GetConfigDirectoryPath(), CONFIG_FILE_NAME);
         }
 
-        public bool ExistsConfigFile()
-        {
-            return _fileWrapper.Exists(GetConfigFilePath());
-        }
-
         public bool ExistsConfigDirectory()
         {
             return _directoryWrapper.Exists(GetConfigDirectoryPath());
+        }
+
+        public bool ExistsConfigFile()
+        {
+            return _fileWrapper.Exists(GetConfigFilePath());
         }
 
         public Config Load()
