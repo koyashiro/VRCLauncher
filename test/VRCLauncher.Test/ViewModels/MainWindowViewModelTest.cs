@@ -43,7 +43,7 @@ namespace VRCLauncher.Test.ViewModels
             var mainWindowViewModel = new MainWindowViewModel(mockLauncher.Object, mockWindowWrapper.Object);
 
             mainWindowViewModel.Uri.Value = uri;
-            Task.Delay(10).Wait();
+            Task.Delay(100).Wait();
 
             // check LaunchParameter
             Assert.Equal(worldId, mainWindowViewModel.WorldId.Value);
