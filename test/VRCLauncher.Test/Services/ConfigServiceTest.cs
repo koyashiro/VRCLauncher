@@ -54,6 +54,30 @@ namespace VRCLauncher.Test.Services
             mockFileWrapper.Verify();
         }
 
+        [Theory]
+        [InlineData(false)]
+        [InlineData(true)]
+        public void ExistsConfigDirectory(bool exists)
+        {
+            var mockEnvironmentWrapper = CreateMockEnvironmentWrapper();
+            var mockDirectoryWrapper = CreateMockDirectoryWrapper(exists);
+            var mockFileWrapper = CreateMockFileWrapper(false);
+            var configService = new ConfigService(mockDirectoryWrapper.Object, mockFileWrapper.Object, mockEnvironmentWrapper.Object);
+            Assert.Equal(exists, configService.ExistsConfigDirectory());
+        }
+
+        [Theory]
+        [InlineData(false)]
+        [InlineData(true)]
+        public void ExistsConfigFile(bool exists)
+        {
+            var mockEnvironmentWrapper = CreateMockEnvironmentWrapper();
+            var mockDirectoryWrapper = CreateMockDirectoryWrapper(exists);
+            var mockFileWrapper = CreateMockFileWrapper(exists);
+            var configService = new ConfigService(mockDirectoryWrapper.Object, mockFileWrapper.Object, mockEnvironmentWrapper.Object);
+            Assert.Equal(exists, configService.ExistsConfigFile());
+        }
+
         public static IEnumerable<object?[]> Load_MemberData()
         {
             Mock<IDirectoryWrapper> mockDirectoryWrapper;
