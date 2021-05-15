@@ -1,4 +1,5 @@
 using Moq;
+using System.Threading.Tasks;
 using VRCLauncher.Models;
 using VRCLauncher.Services;
 using VRCLauncher.ViewModels;
@@ -126,6 +127,7 @@ namespace VRCLauncher.Test.ViewModels
             Assert.False(mainWindowViewModel.LaunchDesktopCommand.CanExecute());
 
             mainWindowViewModel.Uri.Value = uri;
+            Task.Delay(10).Wait();
             Assert.True(mainWindowViewModel.LaunchVRCommand.CanExecute());
             Assert.True(mainWindowViewModel.LaunchDesktopCommand.CanExecute());
 
@@ -151,6 +153,7 @@ namespace VRCLauncher.Test.ViewModels
             Assert.False(mainWindowViewModel.LaunchDesktopCommand.CanExecute());
 
             mainWindowViewModel.Uri.Value = uri;
+            Task.Delay(10).Wait();
             Assert.True(mainWindowViewModel.LaunchVRCommand.CanExecute());
             Assert.True(mainWindowViewModel.LaunchDesktopCommand.CanExecute());
 
