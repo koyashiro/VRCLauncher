@@ -9,7 +9,7 @@ namespace VRCLauncher.Models
         private const string REGEX_UUID = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
         private const string REGEX_WORLD_ID = "wrld_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
         private const string REGEX_USER_ID = "usr_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
-        private const string REGEX_NONCE = "[0-9A-z]+";
+        private const string REGEX_NONCE = "[0-9A-z\\-]+";
 
         public string WorldId { get; set; } = string.Empty;
         public string InstanceId { get; set; } = string.Empty;
