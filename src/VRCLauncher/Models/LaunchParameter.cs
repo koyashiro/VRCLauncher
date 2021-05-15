@@ -12,24 +12,9 @@ namespace VRCLauncher.Models
         private const string REGEX_USER_ID = "usr_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
         private const string REGEX_NONCE = "[0-9A-z]+";
 
-        public LaunchParameter(
-            string worldId,
-            string instanceId,
-            InstanceType instanceType,
-            string? instanceOwnerId,
-            string? nonce
-        )
-        {
-            WorldId = worldId;
-            InstanceId = instanceId;
-            InstanceType = instanceType;
-            InstanceOwnerId = instanceOwnerId;
-            Nonce = nonce;
-        }
-
-        public string WorldId { get; set; }
-        public string InstanceId { get; set; }
-        public InstanceType InstanceType { get; set; }
+        public string WorldId { get; set; } = string.Empty;
+        public string InstanceId { get; set; } = string.Empty;
+        public InstanceType InstanceType { get; set; } = InstanceType.Public;
         public string? InstanceOwnerId { get; set; }
         public string? Nonce { get; set; }
 
@@ -135,7 +120,14 @@ namespace VRCLauncher.Models
                 }
             }
 
-            launchParameter = new LaunchParameter(worldId, instanceId, instanceType, instanceOwnerId, nonce);
+            launchParameter = new LaunchParameter
+            {
+                WorldId = worldId,
+                InstanceId = instanceId,
+                InstanceType = instanceType,
+                InstanceOwnerId = instanceOwnerId,
+                Nonce = nonce,
+            };
             return true;
         }
 

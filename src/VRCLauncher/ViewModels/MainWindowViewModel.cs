@@ -44,13 +44,14 @@ namespace VRCLauncher.ViewModels
 
             var canLaunchCommand = launchParameterObservables.Select(_ =>
                 {
-                    var launchParameter = new LaunchParameter(
-                        WorldId.Value,
-                        InstanceId.Value,
-                        InstanceType.Value,
-                        InstanceOwnerId.Value,
-                        Nonce.Value
-                    );
+                    var launchParameter = new LaunchParameter
+                    {
+                        WorldId = WorldId.Value,
+                        InstanceId = InstanceId.Value,
+                        InstanceType = InstanceType.Value,
+                        InstanceOwnerId = InstanceOwnerId.Value,
+                        Nonce = Nonce.Value,
+                    };
                     return launchParameter.IsValid();
                 });
             void launchCommandAction(object parameter, Action<string> launchAction)
@@ -101,13 +102,14 @@ namespace VRCLauncher.ViewModels
 
         private void UpdateUriIfNeeded()
         {
-            var launchParameter = new LaunchParameter(
-                WorldId.Value,
-                InstanceId.Value,
-                InstanceType.Value,
-                InstanceOwnerId.Value,
-                Nonce.Value
-            );
+            var launchParameter = new LaunchParameter
+            {
+                WorldId = WorldId.Value,
+                InstanceId = InstanceId.Value,
+                InstanceType = InstanceType.Value,
+                InstanceOwnerId = InstanceOwnerId.Value,
+                Nonce = Nonce.Value,
+            };
 
             if (launchParameter.IsValid())
             {
