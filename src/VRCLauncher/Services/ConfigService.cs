@@ -108,7 +108,7 @@ namespace VRCLauncher.Services
             };
             var configJson = JsonSerializer.Serialize(config, option);
 
-            _fileWrapper.WriteAllText(GetConfigFilePath(), configJson);
+            _fileWrapper.WriteAllText(GetConfigFilePath(), $"{configJson}{_environmentWrapper.NewLine}");
         }
     }
 }

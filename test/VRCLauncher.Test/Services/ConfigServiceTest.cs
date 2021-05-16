@@ -209,6 +209,8 @@ namespace VRCLauncher.Test.Services
         private static Mock<IEnvironmentWrapper> CreateMockEnvironmentWrapper()
         {
             var mockEnvironmentWrapper = new Mock<IEnvironmentWrapper>();
+            mockEnvironmentWrapper.SetupGet(ew => ew.NewLine)
+                .Returns(TestConstantValue.NEW_LINE);
             mockEnvironmentWrapper.Setup(ew => ew.GetLocalApplicationDataDirectoryPath())
                 .Returns(TestConstantValue.LOCAL_APPLICATION_DATA);
             return mockEnvironmentWrapper;
