@@ -1,6 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <PackageId>VRCLauncher</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>koyashiro</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/koyashiro/VRCLauncher</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
