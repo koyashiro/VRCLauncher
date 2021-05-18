@@ -1,4 +1,5 @@
 using Moq;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using VRCLauncher.Models;
@@ -71,6 +72,23 @@ namespace VRCLauncher.Test.ViewModels
             mainWindowViewModel.LaunchDesktopCommand.Execute();
             mockLauncher.Verify();
             mockWindowWrapper.Verify();
+        }
+
+        [Fact]
+        public void InstanceTypeItems()
+        {
+            var mockLauncher = new Mock<ILaunchService>();
+            var mockWindowWrapper = new Mock<IWindowWrapper>();
+
+            var mainWindowViewModel = new MainWindowViewModel(mockLauncher.Object, mockWindowWrapper.Object);
+
+            Assert.Equal(5, mainWindowViewModel.InstanceTypeItems.Count);
+            Assert.Equal(Enum.GetValues<InstanceType>(), mainWindowViewModel.InstanceTypeItems.Keys);
+            Assert.Equal("Public", mainWindowViewModel.InstanceTypeItems[InstanceType.Public]);
+            Assert.Equal("Friend+", mainWindowViewModel.InstanceTypeItems[InstanceType.FriendPlus]);
+            Assert.Equal("Friend Only", mainWindowViewModel.InstanceTypeItems[InstanceType.FriendOnly]);
+            Assert.Equal("Invite+", mainWindowViewModel.InstanceTypeItems[InstanceType.InvitePlus]);
+            Assert.Equal("Invite", mainWindowViewModel.InstanceTypeItems[InstanceType.InviteOnly]);
         }
     }
 }
