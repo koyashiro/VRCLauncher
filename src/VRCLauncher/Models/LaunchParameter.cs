@@ -101,7 +101,7 @@ namespace VRCLauncher.Models
 
             var URI_PUBLIC = $"vrchat://launch/?ref=vrchat.com&id={WorldId}:{InstanceId}";
 
-            var region = Region == Region.None ? string.Empty : $"~region{Region.ToString().ToLower()}";
+            var region = Region == Region.None ? string.Empty : $"~region({Region.ToString().ToLower()})";
 
             return InstanceType switch
             {
