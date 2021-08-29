@@ -13,7 +13,7 @@ namespace VRCLauncher.Models
         private const string REGEX_REGION = "[a-z]+";
         private const string REGEX_NONCE = "[0-9A-z\\-]+";
 
-        private static Dictionary<string, Region> RegionDictionary { get; } = new ()
+        private static Dictionary<string, Region> RegionDictionary { get; } = new()
         {
             { "us", Region.US },
             { "eu", Region.EU },
