@@ -30,6 +30,7 @@ namespace VRCLauncher.ViewModels
             InstanceId = new ReactiveProperty<string>(string.Empty).AddTo(Disposable);
             InstanceType = new ReactiveProperty<InstanceType>(Models.InstanceType.Public).AddTo(Disposable);
             InstanceOwnerId = new ReactiveProperty<string?>().AddTo(Disposable);
+            Region = new ReactiveProperty<Region>(Models.Region.None).AddTo(Disposable);
             Nonce = new ReactiveProperty<string?>().AddTo(Disposable);
 
             var launchParameterObservables = Observable.Merge(
@@ -37,6 +38,7 @@ namespace VRCLauncher.ViewModels
                 InstanceId.ToUnit(),
                 InstanceType.ToUnit(),
                 InstanceOwnerId.ToUnit(),
+                Region.ToUnit(),
                 Nonce.ToUnit());
 
             Uri.Subscribe(_ => UpdateLaunchParameterIfNeeded());
@@ -50,6 +52,7 @@ namespace VRCLauncher.ViewModels
                         InstanceId = InstanceId.Value,
                         InstanceType = InstanceType.Value,
                         InstanceOwnerId = InstanceOwnerId.Value,
+                        Region = Region.Value,
                         Nonce = Nonce.Value,
                     };
                     return launchParameter.IsValid();
@@ -74,6 +77,7 @@ namespace VRCLauncher.ViewModels
         public ReactiveProperty<string> InstanceId { get; }
         public ReactiveProperty<InstanceType> InstanceType { get; }
         public ReactiveProperty<string?> InstanceOwnerId { get; }
+        public ReactiveProperty<Region> Region { get; }
         public ReactiveProperty<string?> Nonce { get; }
 
         public ReactiveCommand LaunchVRCommand { get; }
@@ -96,6 +100,7 @@ namespace VRCLauncher.ViewModels
                 InstanceId.Value = launchParameter.InstanceId;
                 InstanceType.Value = launchParameter.InstanceType;
                 InstanceOwnerId.Value = launchParameter.InstanceOwnerId;
+                Region.Value = launchParameter.Region;
                 Nonce.Value = launchParameter.Nonce;
             }
         }
@@ -108,6 +113,7 @@ namespace VRCLauncher.ViewModels
                 InstanceId = InstanceId.Value,
                 InstanceType = InstanceType.Value,
                 InstanceOwnerId = InstanceOwnerId.Value,
+                Region = Region.Value,
                 Nonce = Nonce.Value,
             };
 

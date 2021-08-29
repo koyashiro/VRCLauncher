@@ -38,6 +38,7 @@
                 <RowDefinition />
                 <RowDefinition />
                 <RowDefinition />
+                <RowDefinition />
             </Grid.RowDefinitions>
 
             <Label
@@ -82,9 +83,18 @@
             <Label
                 Grid.Row="4"
                 Grid.Column="0"
-                Content="Nonce:" />
+                Content="Region:" />
             <TextBox
                 Grid.Row="4"
+                Grid.Column="1"
+                Text="{Binding Region.Value, UpdateSourceTrigger=PropertyChanged}" />
+
+            <Label
+                Grid.Row="5"
+                Grid.Column="0"
+                Content="Nonce:" />
+            <TextBox
+                Grid.Row="5"
                 Grid.Column="1"
                 Text="{Binding Nonce.Value, UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
