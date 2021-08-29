@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "VRCLauncher": {
+      "commandName": "Project",
+      "commandLineArgs": "vrchat://launch?ref=vrchat.com&id=wrld_f7a383bc-c925-4696-85c2-2996c0a40112:92821~region(jp) vrchat://launch?ref=vrchat.com&id=wrld_f7a383bc-c925-4696-85c2-2996c0a40112:92821~region(jp)"
+    }
+  }
+}

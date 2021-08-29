@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 
@@ -9,12 +10,21 @@ namespace VRCLauncher.Models
         private const string REGEX_UUID = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
         private const string REGEX_WORLD_ID = "wrld_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
         private const string REGEX_USER_ID = "usr_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
+        private const string REGEX_REGION = "[a-z]+";
         private const string REGEX_NONCE = "[0-9A-z\\-]+";
+
+        private static Dictionary<string, Region> RegionDictionary { get; } = new()
+        {
+            { "us", Region.US },
+            { "eu", Region.EU },
+            { "jp", Region.JP },
+        };
 
         public string WorldId { get; set; } = string.Empty;
         public string InstanceId { get; set; } = string.Empty;
         public InstanceType InstanceType { get; set; } = InstanceType.Public;
         public string? InstanceOwnerId { get; set; }
+        public Region Region { get; set; }
         public string? Nonce { get; set; }
 
         public bool IsValid()
@@ -23,7 +33,8 @@ namespace VRCLauncher.Models
             {
                 return IsValidWorldId(WorldId)
                     && IsValidInstanceType(InstanceType)
-                    && IsValidInstanceId(InstanceId);
+                    && IsValidInstanceId(InstanceId)
+                    && IsValidRegion(Region);
             }
             else
             {
@@ -31,7 +42,8 @@ namespace VRCLauncher.Models
                     && IsValidInstanceId(InstanceId)
                     && IsValidInstanceType(InstanceType)
                     && IsValidUserId(InstanceOwnerId)
-                    && IsValidNonce(Nonce);
+                    && IsValidNonce(Nonce)
+                    && IsValidRegion(Region);
             }
         }
 
@@ -75,6 +87,11 @@ namespace VRCLauncher.Models
             return Regex.IsMatch(nonce, $"^{REGEX_NONCE}$");
         }
 
+        private static bool IsValidRegion(Region region)
+        {
+            return Enum.IsDefined(region);
+        }
+
         public override string ToString()
         {
             if (!IsValid())
@@ -84,13 +101,15 @@ namespace VRCLauncher.Models
 
             var URI_PUBLIC = $"vrchat://launch/?ref=vrchat.com&id={WorldId}:{InstanceId}";
 
+            var region = Region == Region.None ? string.Empty : $"~region{Region.ToString().ToLower()}";
+
             return InstanceType switch
             {
-                InstanceType.Public => URI_PUBLIC,
-                InstanceType.FriendPlus => $"{URI_PUBLIC}~hidden({InstanceOwnerId})~nonce({Nonce})",
-                InstanceType.FriendOnly => $"{URI_PUBLIC}~friends({InstanceOwnerId})~nonce({Nonce})",
-                InstanceType.InvitePlus => $"{URI_PUBLIC}~private({InstanceOwnerId})~canRequestInvite~nonce({Nonce})",
-                InstanceType.InviteOnly => $"{URI_PUBLIC}~private({InstanceOwnerId})~nonce({Nonce})",
+                InstanceType.Public => $"{URI_PUBLIC}{region}",
+                InstanceType.FriendPlus => $"{URI_PUBLIC}~hidden({InstanceOwnerId}){region}~nonce({Nonce})",
+                InstanceType.FriendOnly => $"{URI_PUBLIC}~friends({InstanceOwnerId}){region}~nonce({Nonce})",
+                InstanceType.InvitePlus => $"{URI_PUBLIC}~private({InstanceOwnerId})~canRequestInvite{region}~nonce({Nonce})",
+                InstanceType.InviteOnly => $"{URI_PUBLIC}~private({InstanceOwnerId}){region}~nonce({Nonce})",
                 _ => string.Empty,
             };
         }
@@ -111,6 +130,8 @@ namespace VRCLauncher.Models
 
             var (instanceType, instanceOwnerId) = ParseInstanceTypeAndInstanceOwnerId(arg);
 
+            var region = ParseRegion(arg);
+
             if (!TryParseNonce(arg, out var nonce))
             {
                 if (instanceType != InstanceType.Public)
@@ -126,6 +147,7 @@ namespace VRCLauncher.Models
                 InstanceId = instanceId,
                 InstanceType = instanceType,
                 InstanceOwnerId = instanceOwnerId,
+                Region = region,
                 Nonce = nonce,
             };
             return true;
@@ -187,6 +209,24 @@ namespace VRCLauncher.Models
             return (InstanceType.Public, null);
         }
 
+        private static Region ParseRegion(string arg)
+        {
+            const string GROUP_NAME_REGION = "region";
+
+            var match = Regex.Match(arg, $@"~region\((?<{GROUP_NAME_REGION}>{REGEX_REGION})\)(~|$)");
+            if (!match.Success)
+            {
+                return Region.None;
+            }
+
+            if (!RegionDictionary.TryGetValue(match.Groups[GROUP_NAME_REGION].Value, out var region))
+            {
+                return Region.None;
+            }
+
+            return region;
+        }
+
         private static bool TryParseNonce(string arg, [MaybeNullWhen(false)] out string nonce)
         {
             const string GROUP_NAME_NONCE = "userId";
@@ -217,5 +257,13 @@ namespace VRCLauncher.Models
         FriendOnly,
         InvitePlus,
         InviteOnly,
+    }
+
+    public enum Region
+    {
+        None,
+        US,
+        EU,
+        JP
     }
 }
